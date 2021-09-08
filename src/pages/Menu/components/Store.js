@@ -2,8 +2,8 @@ const Store = ({ storeDate }) => {
   return (
     <div>
       <h1>{storeDate.name}</h1>
-      <p>★{storeDate.evaluation}</p>
-      <p>外送 {storeDate.delivery} 分鐘</p>
+      <p>★{storeDate.rating}</p>
+      <p>外送 {storeDate.deliveryTime} 分鐘</p>
     </div>
   );
 };
