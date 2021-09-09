@@ -1,5 +1,6 @@
 import Store from "./components/Store"
 import Group from "./components/Group"
+import GroupNav from "./components/GroupNav"
 import { useState, useEffect } from "react"
 import { API_GET_STORE } from '../../global/constants'
 import axios from 'axios'
@@ -24,6 +25,7 @@ const Menu = () => {
         <div>
             <Store storeDate={store} />
             ---------------
+            <GroupNav groupMenuData={groupMenu}></GroupNav>
             <Group groupMenuData={groupMenu} />
         </div>
     );
