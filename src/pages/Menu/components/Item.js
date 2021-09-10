@@ -1,5 +1,5 @@
-import { Container, Row, Col, Image } from 'react-bootstrap'
-import { Box, Grid, Divider } from '@material-ui/core';
+import { Image } from 'react-bootstrap'
+import { Box, Grid } from '@material-ui/core';
 
 
 const Item = ({ id, name, note, price }) => {
@@ -14,7 +14,6 @@ const Item = ({ id, name, note, price }) => {
     //     <Col xs={4}>
     //       <Image src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/change-1585927834.png?crop=0.501xw:1.00xh;0,0&resize=640:*" fluid rounded />
     //     </Col>
-    //     {/* <Divider /> */}
     //   </Row>
     // </Container>
     <Grid container justifyContent="center" sm item xs={12}>

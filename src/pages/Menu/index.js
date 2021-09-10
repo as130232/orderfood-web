@@ -3,32 +3,42 @@ import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { useState, useEffect } from "react"
 import { API_GET_STORE } from '../../global/constants'
-import axios from 'axios'
+// import axios from 'axios'
+import { useLocation } from "react-router-dom";
 
-async function fetchStoreAndMenu(setStore, setGroupMenu) {
-    const storeData = await fetch(API_GET_STORE).then(res => res.json()).then(res => res.data)
+async function fetchStoreAndMenu(setStore, setGroupMenu, storeId) {
+    console.log("url storeId:" + storeId)
+    let url = API_GET_STORE.replace(":storeId", storeId)
+    const storeData = await fetch(url).then(res => res.json()).then(res => res.data).catch(err =>
+        console.log(err)
+    )
     // const storeData = await axios.get(API_GET_STORE).then(res => res.data).then(res => res.data)
-    console.log(storeData);
     setStore(storeData)
     setGroupMenu(storeData.groups)
 }
 
+const GetStoreIdByUrl = () => {
+    const search = useLocation().search
+    return new URLSearchParams(search).get("storeId")
+}
+
 const Menu = () => {
-    const [store, setStore] = useState({});
+    const storeId = GetStoreIdByUrl()
+    console.log('storeId:' + storeId);
+    const [store, setStore] = useState({})
     const [groupMenu, setGroupMenu] = useState([])
 
     useEffect(() => {
-        fetchStoreAndMenu(setStore, setGroupMenu);
+        fetchStoreAndMenu(setStore, setGroupMenu, storeId);
     }, [])
 
     return (
         <div>
             <Store storeDate={store} />
-            ---------------
             <GroupNav groupMenuData={groupMenu}></GroupNav>
             <Group groupMenuData={groupMenu} />
         </div>
-    );
-};
+    )
+}
 
 export default Menu;

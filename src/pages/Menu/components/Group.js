@@ -10,7 +10,7 @@ const Group = ({ groupMenuData }) => {
     <>
       {groupMenuData.map((group, idx) => {
         return (
-          <Card key={idx}>
+          <Card key={idx} id={group.name}>
             <CardHeader title={group.name}>
             </CardHeader>
             {group.items.map((item) => {

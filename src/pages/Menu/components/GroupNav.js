@@ -1,16 +1,19 @@
 import React from "react";
-import { Nav } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import AppBar from '@material-ui/core/AppBar';
 import { Tab, Tabs } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
 
+const scrollToAnchor = (anchorName) => {
+    if (anchorName) {
+        let anchorElement = document.getElementById(anchorName);
+        if (anchorElement) { anchorElement.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+    }
+}
 
 const GroupNav = ({ groupMenuData }) => {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(0)
     const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+        setValue(newValue)
+    }
 
     return (
         <AppBar position="sticky" color="default">
@@ -23,7 +26,9 @@ const GroupNav = ({ groupMenuData }) => {
                 scrollButtons="on">
                 {groupMenuData.map((group, idx) => {
                     return (
-                        <Tab label={group.name} />
+                        <Tab key={idx} label={group.name} onClick={() =>
+                            scrollToAnchor(group.name)
+                        } />
                     );
                 })}
             </Tabs>
@@ -37,6 +42,6 @@ const GroupNav = ({ groupMenuData }) => {
         //         );
         //     })}
         // </Nav>
-    );
-};
+    )
+}
 export default GroupNav;
