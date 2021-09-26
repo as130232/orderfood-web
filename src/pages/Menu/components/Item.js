@@ -16,8 +16,8 @@ const Item = ({ id, name, note, price }) => {
     //     </Col>
     //   </Row>
     // </Container>
-    <Grid container justifyContent="center" sm item xs={12}>
-      <Grid id={id} item xs={8}>
+    <Grid id={id} container justifyContent="center" sm item xs={12} sm={6} md={4} lg={3}>
+      <Grid item xs={8}>
         <h5><b>{name}</b></h5>
         <span>{note}</span>
         <Box justifyContent="flex-end">${price}</Box>
