@@ -3,29 +3,31 @@ import { useState, useEffect } from "react"
 import { API_GET_MEAL } from '../../../global/constants'
 import { useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-
+import Meal from './components/Meal'
 
 const MealIdByUrl = () => {
     const search = useLocation().search
     return new URLSearchParams(search).get("mealId")
 }
 
-const getMeal = async () => {
-    const mealId = MealIdByUrl()
+async function fetchMeal(setMeal, mealId) {
     let url = API_GET_MEAL.replace(":mealId", mealId)
-    const res = await fetch(url)
-    return res.json();
+    const data = await fetch(url).then(res => res.json()).then(res => res.data).catch(err => console.log(err))
+    setMeal(data)
 }
 
-
 const MenuDetail = () => {
-    const queryClient = new QueryClient()
-    const { data, isLoading, error } = useQuery('meal', getMeal)
-    console.log(data)
+    const mealId = MealIdByUrl()
+    const [meal, setMeal] = useState({})
+
+    useEffect(() => {
+        fetchMeal(setMeal, mealId);
+    }, [])
+
     return (
-        <QueryClientProvider client={queryClient}>
-            <div />
-        </QueryClientProvider>
-    );
-};
+        <div >
+            <Meal meal={meal} />
+        </div>
+    )
+}
 export default MenuDetail;

@@ -1,8 +1,9 @@
 import { Image } from 'react-bootstrap'
 import { Box, Grid } from '@material-ui/core';
-
+import { useHistory } from "react-router-dom"
 
 const Item = ({ id, name, note, price }) => {
+  let history = useHistory();
   return (
     // <Container>
     //   <Row>
@@ -16,7 +17,9 @@ const Item = ({ id, name, note, price }) => {
     //     </Col>
     //   </Row>
     // </Container>
-    <Grid id={id} container justifyContent="center" sm item xs={12} sm={6} md={4} lg={3}>
+    <Grid id={id} container justifyContent="center" sm item xs={12} sm={6} md={4} lg={3} onClick={() => {
+      history.push(`/store/meal?mealId=${id}`)
+    }} >
       <Grid item xs={8}>
         <h5><b>{name}</b></h5>
         <span>{note}</span>
