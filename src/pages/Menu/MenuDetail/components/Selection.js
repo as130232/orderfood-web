@@ -1,21 +1,37 @@
-import Button from '@material-ui/core/Button';
+import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Button } from '@material-ui/core';
+
+const Content = ({ type, items }) => {
+    if (type == 1) {
+        return (
+            <RadioGroup name="row-radio-buttons-group">
+                {items.map(item => {
+                    let id = `${item.id}`;
+                    return <FormControlLabel value={id} control={<Radio />} key={item.id} label={item.name + ' +$' + item.price} />
+                })}
+            </RadioGroup>
+        )
+    } else if (type == 2) {
+        return <div>
+            <FormGroup>
+                {items.map(item => {
+                    return <FormControlLabel value={item.id} control={<Checkbox />} key={item.id} label={item.name + ' +$' + item.price} />
+                })}
+            </FormGroup>
+        </div>
+    }
+}
+
 
 const Selection = ({ selection }) => {
     let requiredSpan = null
     if (selection.required) {
         requiredSpan = <span>*</span>
     }
+
     return (
         <div>
             <h4>{selection.name}{requiredSpan}</h4>
-            {selection.items.map((item) => {
-                return (
-                    <div key={item.id}>
-                        <div>{item.name} <span>+${item.price}</span>
-                        </div>
-                    </div>
-                )
-            })}
+            <Content type={selection.type} items={selection.items} />
         </div>
     );
 };

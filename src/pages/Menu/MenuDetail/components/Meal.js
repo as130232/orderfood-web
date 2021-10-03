@@ -1,6 +1,10 @@
-import React from "react";
-import { Box, Grid } from '@material-ui/core';
+import React from "react"
 import Selection from './Selection'
+import { Box, Grid, FormControl, TextField, Button } from '@material-ui/core'
+
+const handleAddToCart = () => {
+  
+}
 
 const Meal = ({ meal }) => {
   return (
@@ -16,11 +20,20 @@ const Meal = ({ meal }) => {
         </Grid>
       </Grid>
       <div>
-        {meal.selections && meal.selections.map((selection, idx) => {
-          return (
-            <Selection selection={selection} key={idx} />
-          )
-        })}
+        <FormControl component="fieldset">
+          {meal.selections && meal.selections.map((selection, idx) => {
+            return (
+              <Selection selection={selection} key={idx} />
+            )
+          })}
+          <TextField
+            id="outlined-multiline-static"
+            label="備註"
+            multiline
+            rows={2}
+          />
+          <Button onClick={()=>handleAddToCart()}>新增至購物車</Button>
+        </FormControl>
       </div>
     </div>
   )
