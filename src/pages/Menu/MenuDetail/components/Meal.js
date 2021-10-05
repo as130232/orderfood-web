@@ -2,8 +2,8 @@ import React from "react"
 import Selection from './Selection'
 import { Box, Grid, FormControl, TextField, Button } from '@material-ui/core'
 
-const handleAddToCart = () => {
-  
+const handleAddToCart = (meal) => {
+  alert(meal)
 }
 
 const Meal = ({ meal }) => {
@@ -32,7 +32,7 @@ const Meal = ({ meal }) => {
             multiline
             rows={2}
           />
-          <Button onClick={()=>handleAddToCart()}>新增至購物車</Button>
+          <Button variant="contained" onClick={()=>handleAddToCart(meal)}>新增至購物車</Button>
         </FormControl>
       </div>
     </div>

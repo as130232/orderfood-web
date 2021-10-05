@@ -5,7 +5,10 @@ import { useState, useEffect } from "react"
 import { API_GET_STORE } from '../../global/constants'
 // import axios from 'axios'
 import { useLocation } from "react-router-dom"
-import { Drawer } from '@material-ui/core'
+import { Drawer, BottomAppBar, IconButton, AppBar, Toolbar, StyledFab, Box, Typography } from '@material-ui/core'
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import "./index.css";
+
 
 const StoreIdByUrl = () => {
     const search = useLocation().search
@@ -34,12 +37,20 @@ const Menu = () => {
 
     return (
         <div>
-            <Drawer anchor='right' open={cartOpen} onClose={() => { setCartOpen(false) }} >
-                購物車
-            </Drawer>
             <Store store={store} />
             <GroupNav groupMenuData={groupMenu}></GroupNav>
             <Group groupMenuData={groupMenu} />
+
+            <AppBar position="static" style={{ backgroundColor: "#F28A30" }}>
+                <Toolbar variant="dense">
+                    <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                        <ShoppingCartIcon />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit" component="div">
+                        購物車
+                    </Typography>
+                </Toolbar>
+            </AppBar>
         </div>
     )
 }
