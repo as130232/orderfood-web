@@ -1,14 +1,17 @@
+import { useState, useEffect } from "react"
+import { useLocation } from "react-router-dom"
+import { useLiff } from 'react-liff'
 import Store from "./components/Store"
 import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
-import { useState, useEffect } from "react"
 import { API_GET_STORE } from '../../global/constants'
-import { useLocation } from "react-router-dom"
 import { IconButton, AppBar, Toolbar, StyledFab, Box, Typography } from '@material-ui/core'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { useLiff } from 'react-liff';
-import "./index.css";
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import "./index.css"
 
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 
 const StoreIdByUrl = () => {
     const search = useLocation().search
@@ -24,14 +27,15 @@ async function fetchStoreAndMenu(setStore, setGroupMenu, storeId) {
 }
 
 const Menu = () => {
+    const [lineProfile, setLineProfile] = useState('');
     const [displayName, setDisplayName] = useState('');
     const { error, liff, isLoggedIn, ready } = useLiff();
     useEffect(() => {
         if (!isLoggedIn) return;
-
         (async () => {
             const profile = await liff.getProfile();
             setDisplayName(profile.displayName);
+            setLineProfile(profile);
         })();
     }, [liff, isLoggedIn]);
 
@@ -63,11 +67,12 @@ const Menu = () => {
 
     return (
         <div>
+            <PrimarySearchAppBar></PrimarySearchAppBar>
             <Store store={store} />
             <GroupNav groupMenuData={groupMenu}></GroupNav>
             <Group groupMenuData={groupMenu} />
 
-            <AppBar position="static" style={{ backgroundColor: "#F28A30" }}>
+            <AppBar position="static" style={{ backgroundColor: "#F28A30" }} sx={{ top: 'auto', bottom: 0 }}>
                 <Toolbar variant="dense">
                     <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
                         <ShoppingCartIcon />
@@ -78,7 +83,7 @@ const Menu = () => {
                 </Toolbar>
             </AppBar>
             <div className="App">
-                <header className="App-header">安安你好{showDisplayName()}</header>
+                <header className="App-header">你好{showDisplayName()}</header>
             </div>
         </div>
     )
