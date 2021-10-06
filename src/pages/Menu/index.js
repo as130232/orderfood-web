@@ -3,10 +3,10 @@ import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { useState, useEffect } from "react"
 import { API_GET_STORE } from '../../global/constants'
-// import axios from 'axios'
 import { useLocation } from "react-router-dom"
-import { Drawer, BottomAppBar, IconButton, AppBar, Toolbar, StyledFab, Box, Typography } from '@material-ui/core'
+import { IconButton, AppBar, Toolbar, StyledFab, Box, Typography } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { useLiff } from 'react-liff';
 import "./index.css";
 
 
@@ -24,6 +24,32 @@ async function fetchStoreAndMenu(setStore, setGroupMenu, storeId) {
 }
 
 const Menu = () => {
+    const [displayName, setDisplayName] = useState('');
+    const { error, liff, isLoggedIn, ready } = useLiff();
+    useEffect(() => {
+        if (!isLoggedIn) return;
+
+        (async () => {
+            const profile = await liff.getProfile();
+            setDisplayName(profile.displayName);
+        })();
+    }, [liff, isLoggedIn]);
+
+    const showDisplayName = () => {
+        if (error) return <p>Something is wrong.</p>;
+        if (!ready) return <p>Loading...</p>;
+
+        if (!isLoggedIn) {
+            return <button className="App-button" onClick={liff.login}>Login</button>;
+        }
+        return (
+            <>
+                <p>Welcome to the react-liff demo app, {displayName}!</p>
+                <button className="App-button" onClick={liff.logout}>Logout</button>
+            </>
+        );
+    }
+
     const storeId = StoreIdByUrl()
     const [store, setStore] = useState({})
     const [groupMenu, setGroupMenu] = useState([])
@@ -51,6 +77,9 @@ const Menu = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
+            <div className="App">
+                <header className="App-header">安安你好{showDisplayName()}</header>
+            </div>
         </div>
     )
 }
