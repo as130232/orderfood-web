@@ -17,19 +17,18 @@ const getStoreInfo = async (setStore, setGroupMenu, storeId) => {
     let url = API_GET_STORE.replace(":storeId", storeId)
     const storeData = await fetch(url).then(res => res.json()).then(res => res.data).catch(err => console.log(err))
     // const storeData = await axios.get(API_GET_STORE).then(res => res.data).then(res => res.data)
+    document.title = storeData.name
     setStore(storeData)
     setGroupMenu(storeData.groups)
 }
 
 const Menu = () => {
     const [lineProfile, setLineProfile] = useState('')
-    const [displayName, setDisplayName] = useState('')
     const { error, liff, isLoggedIn, ready } = useLiff()
     useEffect(() => {
         if (!isLoggedIn) return;
         (async () => {
             const profile = await liff.getProfile();
-            setDisplayName(profile.displayName)
             setLineProfile(profile)
         })()
     }, [liff, isLoggedIn])
@@ -48,9 +47,7 @@ const Menu = () => {
         );
     }
 
-    const search = useLocation().search
-    const storeId = new URLSearchParams(search).get("storeId")
-
+    const storeId = new URLSearchParams(useLocation().search).get("storeId")
     const [store, setStore] = useState({})
     const [groupMenu, setGroupMenu] = useState([])
 

@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import { styled, alpha } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
@@ -16,6 +17,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { connect } from 'react-redux'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -58,7 +60,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function PrimarySearchAppBar() {
+const PrimarySearchAppBar = ({ cart }) => {
+    const [cartCount, setCartCount] = useState(0)
+    useEffect(() => {
+        let count = 0
+        cart.forEach(item => {
+            count += item.qty
+        });
+    }, [cart, cartCount])
+    
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -192,9 +202,13 @@ export default function PrimarySearchAppBar() {
                                 <MailIcon />
                             </Badge>
                         </IconButton> */}
-                        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                            <ShoppingCartIcon />
-                        </IconButton>
+                        <Link to="/cart">
+                            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                                <Badge badgeContent={cartCount} color="error"> {cartCount}
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                        </Link>
                         <IconButton
                             size="large"
                             aria-label="show 17 new notifications"
@@ -235,3 +249,9 @@ export default function PrimarySearchAppBar() {
         </Box>
     );
 }
+const mapStateToProps = (state) => {
+    return {
+        cart: state.order.cart
+    }
+}
+export default connect(mapStateToProps)(PrimarySearchAppBar)

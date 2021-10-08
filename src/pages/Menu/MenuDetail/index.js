@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from "react"
 import { API_GET_MEAL } from '../../../global/constants'
 import { useLocation } from "react-router-dom";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import Meal from './components/Meal'
 
 const MealIdByUrl = () => {
@@ -30,4 +28,4 @@ const MenuDetail = () => {
         </div>
     )
 }
-export default MenuDetail;
+export default MenuDetail

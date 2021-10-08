@@ -3,7 +3,6 @@ import Item from "./Item";
 // import { Accordion, Collapse, Card } from 'react-bootstrap'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import { Card, CardHeader, CardContent } from '@material-ui/core';
-import { BrowserRouter, Router, Switch, useLocation } from "react-router-dom"
 
 const Group = ({ groupMenuData }) => {
   return (
