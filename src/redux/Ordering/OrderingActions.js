@@ -1,10 +1,13 @@
 import * as actionTypes from './OrderingTypes'
 
-export const addToCart = (mealId, selections, note) => {
+export const addToCart = (meal, selections, note) => {
+    console.log('meal:', meal)
     return {
         type: actionTypes.ADD_TO_CART,
         payload: {
-            id: mealId,
+            id: meal.id,
+            name: meal.name,
+            price: meal.price,
             selections: selections,
             note: note
         }

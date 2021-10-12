@@ -90,7 +90,6 @@ const PrimarySearchAppBar = ({ cart }) => {
     const [cartCount, setCartCount] = useState(0)
     useEffect(() => {
         let count = 0
-        console.log('cart:', cart)
         cart.forEach((item) => {
             count = count + 1
         })

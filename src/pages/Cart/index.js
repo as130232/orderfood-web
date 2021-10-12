@@ -1,8 +1,7 @@
-
 import { connect } from 'react-redux'
 
-
 const Cart = ({ cart }) => {
+    console.log('cart', cart)
     return (
         <div>
             This is Cart.

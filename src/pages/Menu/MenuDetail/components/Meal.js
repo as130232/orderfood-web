@@ -13,13 +13,13 @@ const Meal = ({ meal, addToCart }) => {
   const history = useHistory()
 
   const handleAddToCart = () => {
-    addToCart(meal.id, mealForm.selections, mealForm.note)
+    addToCart(meal, mealForm.selections, mealForm.note)
     history.goBack()
   }
 
-  useEffect(() => {
-    console.log('menuForm change ', mealForm, mealForm.selections)
-  }, [mealForm])
+  // useEffect(() => {
+  //   console.log('menuForm change ', mealForm, mealForm.selections)
+  // }, [mealForm])
 
   return (
     <div>
@@ -47,6 +47,7 @@ const Meal = ({ meal, addToCart }) => {
             multiline
             rows={2}
           />
+          <p></p>
           <Button variant="contained" onClick={handleAddToCart}>新增至購物車</Button>
         </FormControl>
       </div>
@@ -55,7 +56,7 @@ const Meal = ({ meal, addToCart }) => {
 }
 const mapStateToProps = dispatch => {
   return {
-    addToCart: (mealId, selections, note) => dispatch(addToCart(mealId, selections, note))
+    addToCart: (meal, selections, note) => dispatch(addToCart(meal, selections, note))
   }
 }
 export default connect(null, mapStateToProps)(Meal);

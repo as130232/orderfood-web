@@ -5,12 +5,14 @@ import Store from "./components/Store"
 import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { API_GET_STORE } from '../../global/constants'
-import { IconButton, AppBar, Toolbar, Typography } from '@material-ui/core'
+import { IconButton, AppBar, Toolbar, Typography, Zoom, Fab, Box, useScrollTrigger } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import "./index.css"
 // import { makeStyles } from "@material-ui/core/styles";
 // import { useTheme } from "@material-ui/core/styles";
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
+import PropTypes from 'prop-types';
 
 const getStoreInfo = async (setStore, setGroupMenu, storeId) => {
     let url = API_GET_STORE.replace(":storeId", storeId)
@@ -21,7 +23,7 @@ const getStoreInfo = async (setStore, setGroupMenu, storeId) => {
     setGroupMenu(storeData.groups)
 }
 
-const Menu = () => {
+const Menu = (props) => {
     const [lineProfile, setLineProfile] = useState('')
     const { error, liff, isLoggedIn, ready } = useLiff()
     useEffect(() => {
@@ -61,6 +63,12 @@ const Menu = () => {
             <GroupNav groupMenuData={groupMenu}></GroupNav>
             <Group groupMenuData={groupMenu} />
 
+            <ScrollTop {...props}>
+                <Fab color="secondary" size="small" aria-label="scroll back to top">
+                    <KeyboardArrowUpIcon />
+                </Fab>
+            </ScrollTop>
+
             <AppBar position="static" style={{ backgroundColor: "#F28A30" }} sx={{ top: 'auto', bottom: 0 }}>
                 <Toolbar variant="dense">
                     <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
@@ -76,3 +84,40 @@ const Menu = () => {
 }
 
 export default Menu;
+
+function ScrollTop(props) {
+    const { children, window } = props;
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger({
+        target: window ? window() : undefined,
+        disableHysteresis: true,
+        threshold: 100,
+    });
+
+    const handleClick = (event) => {
+        const anchor = (event.target.ownerDocument || document).querySelector(
+            '#back-to-top-anchor',
+        );
+
+        if (anchor) {
+            anchor.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }
+    };
+
+    return (
+        <Zoom in={trigger}>
+            <Box
+                onClick={handleClick}
+                role="presentation"
+                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+            >
+                {children}
+            </Box>
+        </Zoom>
+    );
+}
