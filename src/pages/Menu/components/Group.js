@@ -1,7 +1,6 @@
 import React from "react";
 import Item from "./Item";
 import { Card, CardHeader, CardContent } from '@material-ui/core';
-import { CardActionArea } from '@material-ui/core';
 
 const Group = ({ groupMenuData }) => {
   return (
@@ -15,9 +14,7 @@ const Group = ({ groupMenuData }) => {
               const { id, name, note, price } = item;
               return (
                 <CardContent key={id}>
-                  {/* <CardActionArea href={`/store/meal?mealId=${id}`}> */}
-                    <Item key={id} id={id} name={name} note={note} price={price} />
-                  {/* </CardActionArea> */}
+                  <Item key={id} id={id} name={name} note={note} price={price} />
                 </CardContent>
               );
             })}

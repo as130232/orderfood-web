@@ -1,4 +1,4 @@
-import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Button } from '@material-ui/core';
+import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox } from '@material-ui/core';
 
 const Content = ({ type, items, mealForm, setMealForm }) => {
 
@@ -29,7 +29,7 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
         })
     }
 
-    if (type == 1) {
+    if (type === 1) {
         return (
             <RadioGroup name="row-radio-buttons-group" onChange={(e) => {
                 updateForm(e.target.value)
@@ -40,7 +40,7 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
                 })}
             </RadioGroup>
         )
-    } else if (type == 2) {
+    } else if (type === 2) {
         return <div>
             <FormGroup>
                 {items.map(item => {

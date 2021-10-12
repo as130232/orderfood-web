@@ -5,12 +5,11 @@ import Store from "./components/Store"
 import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { API_GET_STORE } from '../../global/constants'
-import { IconButton, AppBar, Toolbar, StyledFab, Box, Typography } from '@material-ui/core'
+import { IconButton, AppBar, Toolbar, Typography } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import "./index.css"
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
+// import { useTheme } from "@material-ui/core/styles";
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 
 const getStoreInfo = async (setStore, setGroupMenu, storeId) => {
@@ -50,9 +49,6 @@ const Menu = () => {
     const storeId = new URLSearchParams(useLocation().search).get("storeId")
     const [store, setStore] = useState({})
     const [groupMenu, setGroupMenu] = useState([])
-
-    const [cartOpen, setCartOpen] = useState(false)
-    const [cartItems, setCartItems] = useState([])
 
     useEffect(() => {
         getStoreInfo(setStore, setGroupMenu, storeId);

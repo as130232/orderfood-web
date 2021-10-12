@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { useLiff } from 'react-liff'
 import { styled, alpha } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
@@ -13,6 +14,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -50,8 +52,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
-        // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        paddingLeft: 50,
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        // paddingLeft: 50,
         transition: theme.transitions.create('width'),
         width: '80%',
         [theme.breakpoints.up('md')]: {
@@ -61,14 +63,40 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const PrimarySearchAppBar = ({ cart }) => {
+
+    const [lineProfile, setLineProfile] = useState('')
+    const { error, liff, isLoggedIn, ready } = useLiff()
+    useEffect(() => {
+        if (!isLoggedIn) return;
+        (async () => {
+            const profile = await liff.getProfile();
+            setLineProfile(profile)
+        })()
+    }, [liff, isLoggedIn])
+
+    const showLineImage = () => {
+        if (error) return <p>Something is wrong.</p>
+        if (!ready) return <p>Loading...</p>
+        if (!isLoggedIn) {
+            return <AccountCircle />
+        }
+        return (
+            <Avatar alt={lineProfile.displayName} src={lineProfile.pictureUrl} />
+        );
+    }
+
+
+    let history = useHistory();
     const [cartCount, setCartCount] = useState(0)
     useEffect(() => {
         let count = 0
-        cart.forEach(item => {
-            count += item.qty
-        });
+        console.log('cart:', cart)
+        cart.forEach((item) => {
+            count = count + 1
+        })
+        setCartCount(count)
     }, [cart, cartCount])
-    
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -202,22 +230,16 @@ const PrimarySearchAppBar = ({ cart }) => {
                                 <MailIcon />
                             </Badge>
                         </IconButton> */}
-                        <Link to="/cart">
-                            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                                <Badge badgeContent={cartCount} color="error"> {cartCount}
-                                    <ShoppingCartIcon />
-                                </Badge>
-                            </IconButton>
-                        </Link>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
+                        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}
+                            onClick={() => {
+                                history.push("/cart")
+                            }}
                         >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
+                            <Badge badgeContent={`${cartCount}`} color="error">
+                                <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
+
                         <IconButton
                             size="large"
                             edge="end"
@@ -227,7 +249,8 @@ const PrimarySearchAppBar = ({ cart }) => {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            {showLineImage()}
+                            {/* <AccountCircle /> */}
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -249,7 +272,7 @@ const PrimarySearchAppBar = ({ cart }) => {
         </Box>
     );
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
         cart: state.order.cart
     }
