@@ -1,4 +1,4 @@
-import * as actionTypes from './ordering-types'
+import * as actionTypes from './OrderingTypes'
 
 export const addToCart = (mealId, selections, note) => {
     return {

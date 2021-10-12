@@ -1,4 +1,4 @@
-import * as actionTypes from './ordering-types'
+import * as actionTypes from './OrderingTypes'
 
 const INIT_STATE = {
     cart: []

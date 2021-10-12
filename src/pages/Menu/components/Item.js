@@ -2,7 +2,7 @@ import { Image } from 'react-bootstrap'
 import { Box, Grid, Button } from '@material-ui/core';
 import { useHistory } from "react-router-dom"
 import { connect } from 'react-redux'
-import { addToCart } from '../../../redux/Ordering/ordering-actions'
+import { addToCart } from '../../../redux/Ordering/OrderingActions'
 
 const Item = ({ id, name, note, price, addToCart }) => {
   let history = useHistory();

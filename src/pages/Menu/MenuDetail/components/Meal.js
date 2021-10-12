@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom"
 import Selection from './Selection'
 import { Box, Grid, FormControl, TextField, Button } from '@material-ui/core'
-import { addToCart } from '../../../../redux/Ordering/ordering-actions'
+import { addToCart } from '../../../../redux/Ordering/OrderingActions'
 
 const Meal = ({ meal, addToCart }) => {
   const [mealForm, setMealForm] = useState({
