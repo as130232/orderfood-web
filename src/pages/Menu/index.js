@@ -32,19 +32,19 @@ const Menu = () => {
         })()
     }, [liff, isLoggedIn])
 
-    const showDisplayName = () => {
-        if (error) return <p>Something is wrong.</p>
-        if (!ready) return <p>Loading...</p>
-        if (!isLoggedIn) {
-            return <button className="App-button" onClick={liff.login}>Login</button>
-        }
-        return (
-            <>
-                <p>Welcome to the react-liff demo app, {lineProfile.displayName}!</p>
-                <button className="App-button" onClick={liff.logout}>Logout</button>
-            </>
-        );
-    }
+    // const showDisplayName = () => {
+    //     if (error) return <p>Something is wrong.</p>
+    //     if (!ready) return <p>Loading...</p>
+    //     if (!isLoggedIn) {
+    //         return <button className="App-button" onClick={liff.login}>Login</button>
+    //     }
+    //     return (
+    //         <>
+    //             <p>Welcome to the react-liff demo app, {lineProfile.displayName}!</p>
+    //             <button className="App-button" onClick={liff.logout}>Logout</button>
+    //         </>
+    //     );
+    // }
 
     const storeId = new URLSearchParams(useLocation().search).get("storeId")
     const [store, setStore] = useState({})
@@ -71,9 +71,6 @@ const Menu = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div className="App">
-                <header className="App-header">你好{showDisplayName()}</header>
-            </div>
         </div>
     )
 }
