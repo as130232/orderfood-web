@@ -1,30 +1,30 @@
 import * as actionTypes from './ordering-types'
 
-export const addToCart = (itemId, selections, note) => {
+export const addToCart = (mealId, selections, note) => {
     return {
         type: actionTypes.ADD_TO_CART,
         payload: {
-            id: itemId,
+            id: mealId,
             selections: selections,
             note: note
         }
     }
 }
 
-export const removeFromCart = (itemId) => {
+export const removeFromCart = (mealId) => {
     return {
         type: actionTypes.REMOVE_FROM_CART,
         payload: {
-            id: itemId
+            id: mealId
         }
     }
 }
 
-export const adjustQty = (itemId, value) => {
+export const adjustQty = (mealId, value) => {
     return {
         type: actionTypes.ADJUST_QTY,
         payload: {
-            id: itemId,
+            id: mealId,
             qty: value
         }
     }

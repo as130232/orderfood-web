@@ -1,11 +1,7 @@
-import { Image } from 'react-bootstrap'
 import { Box, Grid } from '@material-ui/core';
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
 const Store = ({ store }) => {
   return (
-    // <AppBar position="sticky" color="default">
-
-    // </AppBar>
       <Grid>
         <Box>
           {/* <Image src="https://hsinchu.lakeshore.com.tw/wp-content/uploads/sites/12/2020/08/hs_mwr_gallery_3.jpg" fluid rounded /> */}
@@ -16,5 +12,4 @@ const Store = ({ store }) => {
       </Grid>
   );
 };
-
 export default Store;
