@@ -10,16 +10,16 @@ const Meal = ({ meal, addToCart }) => {
     selections: [],
     note: ''
   })
-  const history = useHistory()
 
+  const history = useHistory()
   const handleAddToCart = () => {
     addToCart(meal, mealForm.selections, mealForm.note)
     history.goBack()
   }
 
-  // useEffect(() => {
-  //   console.log('menuForm change ', mealForm, mealForm.selections)
-  // }, [mealForm])
+  useEffect(() => {
+    console.log('menuForm change ', mealForm, mealForm.selections)
+  }, [mealForm])
 
   return (
     <div>
