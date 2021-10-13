@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom"
-import { Box, Grid, Typography, Divider } from '@material-ui/core';
+import { Box, Grid, Typography, Divider, TextField } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { FONT_COLOR } from '../../global/constants'
@@ -35,23 +35,32 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
         <Box sx={{ my: 3, mx: 2, cursor: 'pointer' }}>
             <Grid item container
                 onClick={() => {
-                    history.push(`/store/meal/${item.uuid}?`)
-                }}>
+                    history.push(`/store/meal/${item.id}`)
+                }}
+            >
                 <Grid item xs={10}>
                     <Typography variant="h6">{item.name}</Typography>
                     <Typography variant="overline">{item.selections.map((selection) => selection.name).join(", ")}</Typography>
                     <div />
                     <Typography variant="overline">{item.note ? `"${item.note}"` : ''}</Typography>
-                    <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR }}
-                        onClick={handleSubCount} />
-                    {mealCount}
-                    <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR }}
-                        onClick={handleAddCount} />
                 </Grid>
                 <Grid item xs={2}>
                     <Typography align="right" variant="h6">${mealTotal}</Typography>
                 </Grid>
             </Grid>
+            <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, zIndex: "90000" }}
+                onClick={handleSubCount} />
+            <Typography align="center" variant="h7">{mealCount}</Typography>
+            {/* <TextField
+                id="outlined-number"
+                type="number"
+                defaultValue={mealCount}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+            /> */}
+            <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, zIndex: "90000" }}
+                onClick={handleAddCount} />
             <Divider variant="middle" />
         </Box>
     )

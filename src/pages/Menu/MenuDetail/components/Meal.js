@@ -63,9 +63,9 @@ const Meal = ({ meal, addToCart }) => {
     </Box>
   )
 }
-const mapStateToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     addToCart: (meal, selections, note) => dispatch(addToCart(meal, selections, note))
   }
 }
-export default connect(null, mapStateToProps)(Meal);
+export default connect(null, mapDispatchToProps)(Meal);
