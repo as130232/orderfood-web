@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { useLiff } from 'react-liff'
 import Store from "./components/Store"
 import Group from "./components/Group"
@@ -14,8 +14,8 @@ import "./index.css"
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 import PropTypes from 'prop-types';
 
-const getStoreInfo = async (setStore, setGroupMenu, storeId) => {
-    let url = API_GET_STORE.replace(":storeId", storeId)
+const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {
+    let url = API_GET_STORE.replace(":storeCode", storeCode)
     const storeData = await fetch(url).then(res => res.json()).then(res => res.data).catch(err => console.log(err))
     // const storeData = await axios.get(API_GET_STORE).then(res => res.data).then(res => res.data)
     document.title = storeData.name
@@ -48,17 +48,17 @@ const Menu = (props) => {
     //     );
     // }
 
-    const storeId = new URLSearchParams(useLocation().search).get("storeId")
+    const { storeCode } = useParams();
     const [store, setStore] = useState({})
     const [groupMenu, setGroupMenu] = useState([])
 
     useEffect(() => {
-        getStoreInfo(setStore, setGroupMenu, storeId);
+        getStoreInfo(setStore, setGroupMenu, storeCode);
     }, [])
 
     return (
         <div >
-            <div  id="back-to-top-anchor"/>
+            <div id="back-to-top-anchor" />
             <PrimarySearchAppBar></PrimarySearchAppBar>
             <Store store={store} />
             <GroupNav groupMenuData={groupMenu}></GroupNav>
