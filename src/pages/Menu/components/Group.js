@@ -1,27 +1,24 @@
 import React from "react";
 import Item from "./Item";
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { Card, CardHeader, CardContent, Box, Grid, Typography } from '@material-ui/core';
 
 const Group = ({ groupMenuData }) => {
   return (
-    <>
+    <Box sx={{ my: 2, mx: 0 }}>
       {groupMenuData.map((group, idx) => {
         return (
-          <Card key={idx} id={group.name}>
-            <CardHeader title={group.name}>
-            </CardHeader>
+          <Box sx={{ my: 3, mx: 2 }} key={idx} id={group.name}>
+             <Typography variant="h5" gutterBottom component="div">{group.name}</Typography>
             {group.items.map((item) => {
               const { id, name, note, price } = item;
               return (
-                <CardContent key={id}>
-                  <Item key={id} id={id} name={name} note={note} price={price} />
-                </CardContent>
+                <Item key={id} id={id} name={name} note={note} price={price} />
               );
             })}
-          </Card>
+          </Box>
         );
       })}
-    </>
+    </Box>
   );
 };
 export default Group;

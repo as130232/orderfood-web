@@ -4,42 +4,29 @@ const INIT_STATE = {
     cart: []
 }
 
-const orderReducer = (state = INIT_STATE, action) =>  {
+const orderReducer = (state = INIT_STATE, action) => {
+    console.log('action: ', action)
+    let mealInCart = state.cart.filter(item => item.uuid === action.payload.uuid)[0];
     switch (action.type) {
         case actionTypes.ADD_TO_CART:
-            // const item = {id: action.payload.id}
-            // // const item = state.meals.find((meal) => meal.id === action.payload.id)
-            // //檢查是否已存在購物車中
-            // const inCart = state.cart.find(item =>
-            //     item.id === action.payload.id ? true : false
-            // )
-            // console.log('inCart:' + inCart + ', test:' + action.payload.id)
-            // return {
-            //     ...state,
-            //     cart: 
-            //         inCart
-            //         ? state.cart.map((item) =>
-            //             item.id === action.payload.id
-            //                 ? { ...item, qty: item.qty + 1 }
-            //                 : item
-            //         )
-            //         : [...state.cart, { ...item, qty: 1 }]
-
-            // }
-            console.log('payload: ', action.payload)
+            let addSize = state.size + 1;
+            let addTotal = state.total + (action.payload.price + action.payload.selections.reduce((prev, cur) => { return prev + cur.price }, 0))
             return {
                 ...state,
-                cart: [...state.cart, action.payload]
+                cart: [...state.cart, action.payload],
             }
         case actionTypes.REMOVE_FROM_CART:
             return {
                 ...state,
-                cart: state.cart.filter(item => item.id !== action.payload.id)
+                cart: state.cart.filter(item => item.uuid !== action.payload.uuid),
             }
         case actionTypes.ADJUST_QTY:
             return {
                 ...state,
-                cart: state.cart.map(item => item.id === action.payload.id ? { ...item, qty: action.payload.qty } : item)
+                cart: state.cart.map(item =>
+                    item.uuid === action.payload.uuid
+                        ? { ...item, qty: action.payload.qty }
+                        : item),
             }
         default:
             return state

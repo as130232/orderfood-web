@@ -23,7 +23,7 @@ ReactDOM.render(
           <Router>
             <Route exact path="/" component={Home} />
             <Route path="/store/menu/:storeCode" component={Menu} />
-            <Route path="/store/meal" component={MenuDetail} />
+            <Route path="/store/meal/:mealId" component={MenuDetail} />
             <Route path="/cart" component={Cart} />
           </Router>
         </QueryClientProvider>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
-import { useLocation, useParams } from "react-router-dom"
-import { useLiff } from 'react-liff'
+import { useParams } from "react-router-dom"
 import Store from "./components/Store"
 import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
@@ -8,11 +7,9 @@ import { API_GET_STORE } from '../../global/constants'
 import { IconButton, AppBar, Toolbar, Typography, Zoom, Fab, Box, useScrollTrigger } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import "./index.css"
 // import { makeStyles } from "@material-ui/core/styles";
 // import { useTheme } from "@material-ui/core/styles";
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
-import PropTypes from 'prop-types';
 
 const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {
     let url = API_GET_STORE.replace(":storeCode", storeCode)
@@ -24,32 +21,11 @@ const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {
 }
 
 const Menu = (props) => {
-    const [lineProfile, setLineProfile] = useState('')
-    const { error, liff, isLoggedIn, ready } = useLiff()
-    useEffect(() => {
-        if (!isLoggedIn) return;
-        (async () => {
-            const profile = await liff.getProfile();
-            setLineProfile(profile)
-        })()
-    }, [liff, isLoggedIn])
-
-    // const showDisplayName = () => {
-    //     if (error) return <p>Something is wrong.</p>
-    //     if (!ready) return <p>Loading...</p>
-    //     if (!isLoggedIn) {
-    //         return <button className="App-button" onClick={liff.login}>Login</button>
-    //     }
-    //     return (
-    //         <>
-    //             <p>Welcome to the react-liff demo app, {lineProfile.displayName}!</p>
-    //             <button className="App-button" onClick={liff.logout}>Logout</button>
-    //         </>
-    //     );
-    // }
-
     const { storeCode } = useParams();
-    const [store, setStore] = useState({})
+    const [store, setStore] = useState({
+        code: 0,
+        name: "查無店家"
+    })
     const [groupMenu, setGroupMenu] = useState([])
 
     useEffect(() => {
@@ -83,7 +59,6 @@ const Menu = (props) => {
         </div>
     )
 }
-
 export default Menu;
 
 function ScrollTop(props) {

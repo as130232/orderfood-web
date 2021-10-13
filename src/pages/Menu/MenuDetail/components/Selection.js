@@ -1,4 +1,4 @@
-import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox } from '@material-ui/core';
+import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Typography } from '@material-ui/core';
 
 const Content = ({ type, items, mealForm, setMealForm }) => {
     const updateForm = (item) => {
@@ -32,7 +32,7 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
                 {items.map(item => {
                     return <FormControlLabel value={`${item.id}`} control={<Radio onChange={(e) => {
                         updateForm(item)
-                    }} />} key={item.id} label={item.name + ' +$' + item.price} />
+                    }} />} key={item.id} label={item.name + ' + $' + item.price} />
                 })}
             </RadioGroup>
         )
@@ -42,7 +42,7 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
                 {items.map(item => {
                     return <FormControlLabel value={item.id} control={<Checkbox onChange={(e) => {
                         updateForm(item)
-                    }} />} key={item.id} label={item.name + ' +$' + item.price} />
+                    }} />} key={item.id} label={item.name + ' + $' + item.price} />
                 })}
             </FormGroup>
         </div>
@@ -52,13 +52,16 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
 const Selection = ({ selection, mealForm, setMealForm }) => {
     let requiredSpan = null
     if (selection.required) {
-        requiredSpan = <span>*</span>
+        requiredSpan = <span>(必選)</span>
     }
 
     return (
         <div>
-            <h4>{selection.name}{requiredSpan}</h4>
+            <Typography gutterBottom variant="h6">
+                {selection.name}{requiredSpan}
+            </Typography>
             <Content type={selection.type} items={selection.items} mealForm={mealForm} setMealForm={setMealForm} />
+            <p></p>
         </div>
     );
 };

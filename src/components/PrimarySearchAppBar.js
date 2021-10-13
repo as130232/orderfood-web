@@ -123,27 +123,28 @@ const PrimarySearchAppBar = ({ cart }) => {
 
     }
 
-    // const menuId = 'primary-search-account-menu';
-    // const renderMenu = (
-    //     <Menu
-    //         anchorEl={anchorEl}
-    //         anchorOrigin={{
-    //             vertical: 'top',
-    //             horizontal: 'right',
-    //         }}
-    //         id={menuId}
-    //         keepMounted
-    //         transformOrigin={{
-    //             vertical: 'top',
-    //             horizontal: 'right',
-    //         }}
-    //         open={isMenuOpen}
-    //         onClose={handleMenuClose}
-    //     >
-    //         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-    //         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    //     </Menu>
-    // );
+    const menuId = 'primary-search-account-menu';
+    const renderMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+        >
+            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={liff.logout}>Logout</MenuItem>
+        </Menu>
+    );
 
     // const mobileMenuId = 'primary-search-account-menu-mobile';
     // const renderMobileMenu = (
@@ -227,27 +228,26 @@ const PrimarySearchAppBar = ({ cart }) => {
                         />
                     </Search> */}
                     <Box sx={{ flexGrow: 1 }} />
-                    <Box>
+                    <Box onClick={() => {
+                        history.push("/cart")
+                    }}>
                         {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={4} color="error">
                                 <MailIcon />
                             </Badge>
                         </IconButton> */}
-                        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}
-                           
-                        >
+                        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
                             <Badge badgeContent={`${cartCount}`} color="error">
-                                <ShoppingCartIcon  onClick={() => {
-                                history.push("/cart")
-                            }}/>
+                                <ShoppingCartIcon />
                             </Badge>
                         </IconButton>
-
+                    </Box>
+                    <Box onClick={handleProfileMenuOpen}
+                        color="inherit">
                         <IconButton
                             size="medium"
                             edge="end"
                             aria-label="account of current user"
-                            onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
                             {showLineImage()}
@@ -268,8 +268,8 @@ const PrimarySearchAppBar = ({ cart }) => {
                     </Box> */}
                 </Toolbar>
             </AppBar>
-            {/* {renderMobileMenu}
-            {renderMenu} */}
+            {/* {renderMobileMenu}*/}
+            {renderMenu}
         </Box>
     );
 }

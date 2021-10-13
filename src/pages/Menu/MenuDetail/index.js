@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { API_GET_MEAL } from '../../../global/constants'
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Meal from './components/Meal'
 
 async function fetchMeal(setMeal, mealId) {
@@ -10,14 +10,17 @@ async function fetchMeal(setMeal, mealId) {
 }
 
 const MenuDetail = () => {
-    const search = useLocation().search
-    const mealId = new URLSearchParams(search).get("mealId")
+    const { mealId } = useParams();
     const [meal, setMeal] = useState({})
 
     useEffect(() => {
         fetchMeal(setMeal, mealId);
     }, [])
 
+    if (mealId.length == 36){
+        //購物車
+    }
+    
     return (
         <div >
             <Meal meal={meal} />
