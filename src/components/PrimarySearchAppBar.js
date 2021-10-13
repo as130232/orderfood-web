@@ -202,7 +202,7 @@ const PrimarySearchAppBar = ({ cart }) => {
             <AppBar position="static" style={{ backgroundColor: "#F28A30" }}>
                 <Toolbar>
                     <IconButton
-                        size="large"
+                        size="medium"
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
@@ -234,17 +234,17 @@ const PrimarySearchAppBar = ({ cart }) => {
                             </Badge>
                         </IconButton> */}
                         <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}
-                            onClick={() => {
-                                history.push("/cart")
-                            }}
+                           
                         >
                             <Badge badgeContent={`${cartCount}`} color="error">
-                                <ShoppingCartIcon />
+                                <ShoppingCartIcon  onClick={() => {
+                                history.push("/cart")
+                            }}/>
                             </Badge>
                         </IconButton>
 
                         <IconButton
-                            size="large"
+                            size="medium"
                             edge="end"
                             aria-label="account of current user"
                             onClick={handleProfileMenuOpen}

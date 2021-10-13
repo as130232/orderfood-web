@@ -57,7 +57,8 @@ const Menu = (props) => {
     }, [])
 
     return (
-        <div>
+        <div >
+            <div  id="back-to-top-anchor"/>
             <PrimarySearchAppBar></PrimarySearchAppBar>
             <Store store={store} />
             <GroupNav groupMenuData={groupMenu}></GroupNav>
