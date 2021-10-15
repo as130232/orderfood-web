@@ -22,7 +22,7 @@ const MenuDetail = () => {
     }
     
     return (
-        <div >
+        <div>
             <Meal meal={meal} />
         </div>
     )
