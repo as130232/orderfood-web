@@ -15,13 +15,12 @@ const Img = styled('img')({
 const Item = ({ id, name, note, price, addToCart }) => {
   let history = useHistory();
   return (
-    <Box sx={{ my: 1, mx: 0 }} sx={{ cursor: 'pointer' }}
+    <Box sx={{ cursor: 'pointer' }}
       onClick={() => {
         history.push(`/store/meal/${id}`)
       }}>
       <Grid container item
         xs={12} sm={6} md={4} lg={3}
-      // spacing={2}
       >
         <Grid item xs={8}>
           <Typography variant="h6">{name}</Typography>

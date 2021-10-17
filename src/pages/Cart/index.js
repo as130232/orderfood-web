@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom"
-import { Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import { Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@material-ui/core'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 import { FONT_COLOR } from '../../global/constants'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
 
@@ -24,12 +24,12 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
         }
         let count = item.qty - 1;
         adjustQty(item.uuid, count)
-    };
+    }
 
     const handleAddCount = (event) => {
         let count = item.qty + 1;
         adjustQty(item.uuid, count)
-    };
+    }
 
     return (
         <Box sx={{ my: 3, mx: 2, cursor: 'pointer' }}>
@@ -53,15 +53,20 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="center"
+                spacing={1}
             >
-                <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, zIndex: "90000" }}
-                    onClick={handleSubCount} />
-                {/* <Typography variant="h7">{mealCount}</Typography> */}
-                <font size="6">{mealCount}</font>
-                <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, zIndex: "90000" }}
-                    onClick={handleAddCount} />
+                <Grid item>
+                    <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+                        onClick={handleSubCount} />
+                </Grid>
+                <Grid item>
+                    <Typography variant="h5">{mealCount}</Typography>
+                </Grid>
+                <Grid item>
+                    <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+                        onClick={handleAddCount} />
+                </Grid>
             </Grid>
-
             <Divider variant="middle" />
         </Box>
     )

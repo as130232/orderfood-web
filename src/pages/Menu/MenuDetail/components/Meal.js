@@ -3,9 +3,12 @@ import { connect } from 'react-redux'
 import { useHistory, useLocation } from "react-router-dom"
 import Selection from './Selection'
 import { Box, Grid, TextField, Button, Typography, Divider } from '@material-ui/core'
-import { addToCart, updateToCart } from '../../../../redux/Ordering/OrderingActions'
+import { addToCart, updateToCart, adjustQty } from '../../../../redux/Ordering/OrderingActions'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import { FONT_COLOR } from '../../../../global/constants'
 
-const Meal = ({ meal, cart, addToCart, updateToCart }) => {
+const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
   const [mealForm, setMealForm] = useState({
     selections: [],
     note: '',
@@ -33,14 +36,36 @@ const Meal = ({ meal, cart, addToCart, updateToCart }) => {
   }, [cart, uuid])
 
   const handleAddToCart = () => {
-    addToCart(meal, mealForm.selections, mealForm.note)
+    addToCart(meal, mealForm.selections, mealForm.note, mealForm.qty)
     history.goBack()
   }
 
   const handleUpdateToCart = () => {
-    console.log('uuid', uuid)
     updateToCart(uuid, meal, mealForm.selections, mealForm.note, mealForm.qty)
     history.goBack()
+  }
+
+  const handleSubCount = (event) => {
+    if (mealForm.qty === 1) {
+      return
+    }
+    let count = mealForm.qty - 1;
+    setMealForm(prevFrom => {
+      return {
+        ...prevFrom,
+        qty: count
+      }
+    })
+  }
+
+  const handleAddCount = (event) => {
+    let count = mealForm.qty + 1;
+    setMealForm(prevFrom => {
+      return {
+        ...prevFrom,
+        qty: count
+      }
+    })
   }
 
   return (
@@ -80,9 +105,30 @@ const Meal = ({ meal, cart, addToCart, updateToCart }) => {
           value={mealForm.note}
           onChange={(e) => { setMealForm(prev => ({ ...prev, note: e.target.value })) }}
         />
-      </Box>
-      <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-        <Button color="secondary" variant="contained" onClick={uuid ? handleUpdateToCart : handleAddToCart}>{uuid ? "更新購物車" : "加入購物車"}</Button>
+        <p></p>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid item>
+            <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+              onClick={handleSubCount} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h5">{mealForm.qty}</Typography>
+          </Grid>
+          <Grid item>
+            <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+              onClick={handleAddCount} />
+          </Grid>
+          <Grid item>
+            <Button color="secondary" variant="contained" onClick={uuid ? handleUpdateToCart : handleAddToCart}>{uuid ? "更新購物車" : "加入購物車"}</Button>
+          </Grid>
+        </Grid>
+
       </Box>
     </Box>
   )
@@ -94,8 +140,9 @@ const mapStateToProps = (state, dispatch) => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    addToCart: (meal, selections, note) => dispatch(addToCart(meal, selections, note)),
-    updateToCart: (uuid, meal, selections, note, qty) => dispatch(updateToCart(uuid, meal, selections, note, qty))
+    addToCart: (meal, selections, note, qty) => dispatch(addToCart(meal, selections, note, qty)),
+    updateToCart: (uuid, meal, selections, note, qty) => dispatch(updateToCart(uuid, meal, selections, note, qty)),
+    adjustQty: (uuid, qty) => dispatch(adjustQty(uuid, qty)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Meal);
