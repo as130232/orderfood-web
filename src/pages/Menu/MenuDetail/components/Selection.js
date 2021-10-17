@@ -3,20 +3,19 @@ import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Typography } 
 const Content = ({ type, items, mealForm, setMealForm }) => {
     const updateForm = (item) => {
         setMealForm(prevFrom => {
-            const selected = new Set(prevFrom.selections)
+            let selected = [...prevFrom.selections]
             if (type === 1) {       // radio
                 const radioSelected = items.filter(e => e !== item) // 其他選項 && 以選取的有包含 => 以選取的radio項
                 if (radioSelected && radioSelected.length) { // radioSelected 如果沒有, 代表沒選過
-                    radioSelected.forEach(e => { // 雖然陣列只有一個, 不用for loop, 也可以改成直接取第一個值
-                        selected.delete(e)
-                    });
+                    selected = selected.filter(e => radioSelected.findIndex(s => s.id === e.id) < 0)
                 }
-                selected.add(item)
+                selected.push(item)
             } else if (type === 2) { // check
-                if (selected.has(item)) {
-                    selected.delete(item)
+                const selectedIdx = selected.findIndex(s => s.id === item.id)
+                if (selectedIdx >= 0) {
+                    selected.splice(selectedIdx, 1)
                 } else {
-                    selected.add(item)
+                    selected.push(item)
                 }
             }
             return {
@@ -27,25 +26,35 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
     }
 
     if (type === 1) {
+        const selectedItem = items.find(e => mealForm.selections.some(e2 => e.id === e2.id))
         return (
-            <RadioGroup name="row-radio-buttons-group">
+            <RadioGroup name="row-radio-buttons-group" value={selectedItem ? `${selectedItem.id}` : ''}>
                 {items.map(item => {
-                    return <FormControlLabel value={`${item.id}`} control={<Radio onChange={(e) => {
-                        updateForm(item)
-                    }} />} key={item.id} label={item.name + ' + $' + item.price} />
+                    return <FormControlLabel
+                        key={item.id}
+                        value={`${item.id}`}
+                        label={item.name + ' + $' + item.price}
+                        control={<Radio onChange={(e) => {
+                            updateForm(item)
+                        }} />} />
                 })}
             </RadioGroup>
         )
     } else if (type === 2) {
-        return <div>
+        return (
             <FormGroup>
                 {items.map(item => {
-                    return <FormControlLabel value={item.id} control={<Checkbox onChange={(e) => {
-                        updateForm(item)
-                    }} />} key={item.id} label={item.name + ' + $' + item.price} />
+                    return <FormControlLabel
+                        key={item.id}
+                        value={item.id}
+                        label={item.name + ' + $' + item.price}
+                        control={<Checkbox
+                            defaultChecked={mealForm.selections.some(e => e.id === item.id)}
+                            onChange={(e) => { updateForm(item) }} />}
+                    />
                 })}
             </FormGroup>
-        </div>
+        )
     }
 }
 

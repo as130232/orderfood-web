@@ -6,11 +6,8 @@ const INIT_STATE = {
 
 const orderReducer = (state = INIT_STATE, action) => {
     console.log('action: ', action)
-    let mealInCart = state.cart.filter(item => item.uuid === action.payload.uuid)[0];
     switch (action.type) {
         case actionTypes.ADD_TO_CART:
-            let addSize = state.size + 1;
-            let addTotal = state.total + (action.payload.price + action.payload.selections.reduce((prev, cur) => { return prev + cur.price }, 0))
             return {
                 ...state,
                 cart: [...state.cart, action.payload],
@@ -26,6 +23,14 @@ const orderReducer = (state = INIT_STATE, action) => {
                 cart: state.cart.map(item =>
                     item.uuid === action.payload.uuid
                         ? { ...item, qty: action.payload.qty }
+                        : item),
+            }
+        case actionTypes.UPDATE_TO_CART:
+            return {
+                ...state,
+                cart: state.cart.map(item =>
+                    item.uuid === action.payload.uuid
+                        ? { ...action.payload } 
                         : item),
             }
         default:

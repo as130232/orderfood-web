@@ -34,3 +34,18 @@ export const adjustQty = (uuid, qty) => {
         }
     }
 }
+
+export const updateToCart = (uuid, meal, selections, note, qty) => {
+    return {
+        type: actionTypes.UPDATE_TO_CART,
+        payload: {
+            uuid: uuid,
+            id: meal.id,
+            name: meal.name,
+            price: meal.price,
+            selections: selections,
+            note: note,
+            qty: qty
+        }
+    }
+}

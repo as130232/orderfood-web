@@ -35,7 +35,7 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
         <Box sx={{ my: 3, mx: 2, cursor: 'pointer' }}>
             <Grid item container
                 onClick={() => {
-                    history.push(`/store/meal/${item.id}`)
+                    history.push(`/store/meal/${item.id}?uuid=${item.uuid}`)
                 }}
             >
                 <Grid item xs={10}>
@@ -70,10 +70,7 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
 const DeliveryType = ({ type }) => {
     //自取
     if (type === 1) {
-
         // const [date, setDate] = React.useState(new Date());
-
-
         return (
             <div>
                 {/* <MobileDatePicker

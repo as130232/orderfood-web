@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { API_GET_MEAL } from '../../../global/constants'
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"
 import Meal from './components/Meal'
 
 async function fetchMeal(setMeal, mealId) {
@@ -9,22 +9,19 @@ async function fetchMeal(setMeal, mealId) {
     setMeal(data)
 }
 
-const MenuDetail = () => {
-    const { mealId } = useParams();
+const MenuDetail = ({cart}) => {
+    const { mealId } = useParams()
     const [meal, setMeal] = useState({})
-
+   
     useEffect(() => {
         fetchMeal(setMeal, mealId);
     }, [])
 
-    if (mealId.length == 36){
-        //購物車
-    }
-    
     return (
         <div>
-            <Meal meal={meal} />
+            <Meal meal={meal}/>
         </div>
     )
 }
+
 export default MenuDetail
