@@ -27,6 +27,7 @@ const Menu = (props) => {
         name: "查無店家"
     })
     const [groupMenu, setGroupMenu] = useState([])
+		const [groupInView, setGroupInView] = useState(0) // 現在滑行到哪一個group
 
     useEffect(() => {
         getStoreInfo(setStore, setGroupMenu, storeCode);
@@ -37,8 +38,10 @@ const Menu = (props) => {
             <div id="back-to-top-anchor" />
             <PrimarySearchAppBar></PrimarySearchAppBar>
             <Store store={store} />
-            <GroupNav groupMenuData={groupMenu}></GroupNav>
-            <Group groupMenuData={groupMenu} />
+            <GroupNav groupMenuData={groupMenu} groupInView={groupInView}></GroupNav>
+            <Group groupMenuData={groupMenu} updateGroupInView={groupIndex => {
+							setGroupInView(groupIndex)
+						}} />
 
             <ScrollTop {...props}>
                 <Fab color="secondary" size="small" aria-label="scroll back to top">
