@@ -9,28 +9,32 @@ const scrollToAnchor = (anchorName) => {
     }
 }
 
-const GroupNav = ({ groupMenuData }) => {
+const GroupNav = ({ groupMenuData, groupInView }) => {
     const [value, setValue] = React.useState(0)
     const handleChange = (event, newValue) => {
-        setValue(newValue)
+      setValue(newValue)
     }
+
+		React.useEffect(() => {
+			setValue(groupInView);
+		}, [groupInView]);
 
     return (
         <AppBar position="sticky" color="default">
             <Tabs
-                value={value}
-                onChange={handleChange}
-                indicatorColor="secondary"
-                textColor="secondary"
-                variant="scrollable"
-                scrollButtons="on">
-                {groupMenuData.map((group, idx) => {
-                    return (
-                        <Tab key={idx} label={group.name} onClick={() =>
-                            scrollToAnchor(group.name)
-                        } />
-                    );
-                })}
+							value={value}
+							onChange={handleChange}
+							indicatorColor="secondary"
+							textColor="secondary"
+							variant="scrollable"
+							scrollButtons="on">
+							{groupMenuData.map((group, idx) => {
+								return (
+										<Tab key={idx} label={group.name} onClick={() =>
+												scrollToAnchor(group.name)
+										} />
+								);
+							})}
             </Tabs>
         </AppBar>
         // <Nav fill variant="tabs" defaultActiveKey="/home">
