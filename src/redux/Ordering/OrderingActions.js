@@ -1,7 +1,7 @@
 import * as actionTypes from './OrderingTypes'
 import { v4 as uuidv4 } from 'uuid';
 
-export const addToCart = (meal, selections, note) => {
+export const addToCart = (meal, selections, note, qty) => {
     return {
         type: actionTypes.ADD_TO_CART,
         payload: {
@@ -11,7 +11,7 @@ export const addToCart = (meal, selections, note) => {
             price: meal.price,
             selections: selections,
             note: note,
-            qty:1
+            qty: qty
         }
     }
 }
@@ -30,6 +30,21 @@ export const adjustQty = (uuid, qty) => {
         type: actionTypes.ADJUST_QTY,
         payload: {
             uuid: uuid,
+            qty: qty
+        }
+    }
+}
+
+export const updateToCart = (uuid, meal, selections, note, qty) => {
+    return {
+        type: actionTypes.UPDATE_TO_CART,
+        payload: {
+            uuid: uuid,
+            id: meal.id,
+            name: meal.name,
+            price: meal.price,
+            selections: selections,
+            note: note,
             qty: qty
         }
     }

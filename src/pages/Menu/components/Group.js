@@ -87,3 +87,4 @@ const Group = ({ groupMenuData, updateGroupInView }) => {
   );
 };
 export default Group;
+
