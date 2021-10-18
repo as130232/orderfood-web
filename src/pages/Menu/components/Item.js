@@ -59,8 +59,6 @@ const Item = ({ id, name, note, price, addToCart }) => {
   );
 };
 
-// const memoedItem = React.memo(Item);
-
 const mapStateToProps = (dispatch) => {
   return {
     addToCart: (id) => dispatch(addToCart(id))

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Item from "./Item";
-import { Card, CardHeader, CardContent, Box, Grid, Typography } from '@material-ui/core';
+// import { Card, CardHeader, CardContent, Box, Grid, Typography } from '@material-ui/core';
 import styled from "styled-components"
 import { PAGE_CONTAINER } from '../../../global/globalStyle'
 import useScrollYPosition from "../../../hooks/useScrollYPosition"
@@ -17,54 +17,38 @@ const AGroup = styled.ul`
 `
 
 function getCurrentGroupInView(windowScrollY, groupElements){
-	let currentGroupIndex = 0;
-	let bufferDistance = 80; // 緩衝距離
 
-	let firstGroupTop = 0;
-	let lastGroupBottom = 0;
+	const bufferDistance = 80; // 緩衝距離
+	let groupInView = null; // 滑進範圍的group
 
 	groupElements.forEach((grp, index) => {
-		const groupTop = grp.getBoundingClientRect().top - bufferDistance // group的上緣的位置
-		const groupBottom = grp.getBoundingClientRect().bottom + bufferDistance // group的下緣的位置
-
-		if (index === 0) {
-			firstGroupTop = groupTop
-		}
-
-		if (index === groupElements.length - 1) {
-			lastGroupBottom = groupBottom;
-		}
+		const groupTop = grp.getBoundingClientRect().top - bufferDistance // group的top與螢幕上邊框的距離，會隨著scroll改變
+		const groupBottom = grp.getBoundingClientRect().bottom + bufferDistance // group的bottom與螢幕上邊框的距離
 
 		if (windowScrollY >= groupTop && windowScrollY <= groupBottom) {
-			// 若scrollY介於 group的上緣、下緣之間，就是當前的group
-			currentGroupIndex = index;
-			return currentGroupIndex
+			groupInView = index
 		}
 	})
 
-	if (windowScrollY < firstGroupTop) {
-		currentGroupIndex = 0
-	}
-	if (windowScrollY > lastGroupBottom) {
-		currentGroupIndex = groupElements.length - 1;
-	}
-
-	return currentGroupIndex
+	return groupInView
 }
 
 const Group = ({ groupMenuData, updateGroupInView }) => {
 
 	const prevScrollY = useScrollYPosition() // 上一次 Y scroll位置
-
 	const groupRef = useRef([]);
 
 	useEffect(() => {
 
-		if (groupRef.current) {
-			const groupIndex = getCurrentGroupInView(prevScrollY, groupRef.current);
+		if (!groupRef.current) {
+			return
+		}
+			
+		const groupIndex = getCurrentGroupInView(prevScrollY, groupRef.current);
+		if (groupIndex !== null) {
 			updateGroupInView(groupIndex);
 		}
-
+		
 	}, [groupRef, prevScrollY])
 
   return (
