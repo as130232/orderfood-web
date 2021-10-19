@@ -41,7 +41,7 @@ const useScrollYPosition = () => {
 		return () => {
 			documentRef.current.removeEventListener('scroll', onScroll);
 		}
-  }, []);
+  }, [prevScrollY]);
 
 	return prevScrollY
 }
