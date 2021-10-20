@@ -1,6 +1,6 @@
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { FONT_COLOR } from '../../global/constants'
 
 const AddSubButton = () => {

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import { useHistory, useLocation } from "react-router-dom"
 import Selection from './Selection'
-import { Box, Grid, TextField, Button, Typography, Divider } from '@material-ui/core'
+import { Box, Grid, TextField, Button, Typography, Divider } from '@mui/material'
 import { addToCart, updateToCart, adjustQty } from '../../../../redux/Ordering/OrderingActions'
-import AddCircleIcon from '@material-ui/icons/AddCircle'
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { FONT_COLOR } from '../../../../global/constants'
 
 const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {

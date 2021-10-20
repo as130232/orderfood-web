@@ -1,6 +1,5 @@
-import React from "react";
-import AppBar from '@material-ui/core/AppBar';
-import { Tab, Tabs } from '@material-ui/core';
+import React from "react"
+import { AppBar, Tab, Tabs } from '@mui/material'
 
 const scrollToAnchor = (anchorName) => {
     if (anchorName) {

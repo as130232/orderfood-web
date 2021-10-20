@@ -4,11 +4,10 @@ import Store from "./components/Store"
 import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { API_GET_STORE } from '../../global/constants'
-import { IconButton, AppBar, Toolbar, Typography, Zoom, Fab, Box, useScrollTrigger } from '@material-ui/core'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-// import { makeStyles } from "@material-ui/core/styles";
-// import { useTheme } from "@material-ui/core/styles";
+import { IconButton, AppBar, Toolbar, Typography, Zoom, Fab, Box, useScrollTrigger } from '@mui/material'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 
 const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {

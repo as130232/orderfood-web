@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react"
 import Item from "./Item";
-// import { Card, CardHeader, CardContent, Box, Grid, Typography } from '@material-ui/core';
 import styled from "styled-components"
 import { PAGE_CONTAINER } from '../../../global/globalStyle'
 import useScrollYPosition from "../../../hooks/useScrollYPosition"

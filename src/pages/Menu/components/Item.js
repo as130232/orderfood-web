@@ -1,9 +1,8 @@
 import { useHistory } from "react-router-dom"
 import { connect } from 'react-redux'
 import styled from "styled-components"
-// import { styled } from '@material-ui/styles';
 import { addToCart } from '../../../redux/Ordering/OrderingActions'
-import { Box, Grid, ButtonBase, Typography, Paper } from '@material-ui/core'
+import { Box, Grid, ButtonBase, Typography, Paper } from '@mui/material'
 import { FONT_COLOR } from '../../../global/globalStyle'
 import ImageBox from "../../../components/ImageBox"
 

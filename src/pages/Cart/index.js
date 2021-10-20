@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom"
-import { Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@material-ui/core'
-import AddCircleIcon from '@material-ui/icons/AddCircle'
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
+import { Button, Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { FONT_COLOR } from '../../global/constants'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
+
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 const CartItem = ({ item, removeFromCart, adjustQty }) => {
     let history = useHistory()
@@ -109,9 +112,16 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
         setTotalCount(count)
     }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount])
 
+    const [value, setValue] = useState(new Date());
+
     if (cart.length == 0) {
         return (<Box>空的購物車</Box>)
     }
+
+    const submit = () => {
+
+    }
+
 
     return (
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -136,7 +146,6 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
                     alignItems="flex-start"
                 >
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">付費方式</FormLabel>
                         <RadioGroup row aria-label="payType" name="row-radio-buttons-group" defaultValue="1">
                             <FormControlLabel value="1" control={<Radio />} label="現場付款" />
                             <FormControlLabel
@@ -148,12 +157,21 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
                         </RadioGroup>
                     </FormControl>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">類型</FormLabel>
                         <RadioGroup row aria-label="type" name="row-radio-buttons-group" defaultValue="1">
                             <FormControlLabel value="1" control={<Radio />} label="自取" />
                             <FormControlLabel value="2" control={<Radio />} label="店家外送" />
                         </RadioGroup>
                     </FormControl>
+
+                    <MobileDatePicker
+                        label="For mobile"
+                        value={value}
+                        onChange={(newValue) => {
+                            setValue(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                    />
+
                     <TextField
                         id="outlined-basic"
                         label="備註"
@@ -162,6 +180,7 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
                         rows={1}
                     />
                 </Grid>
+                <Button color="secondary" variant="contained" onClick={submit}></Button>
             </Box>
         </Box>
     )

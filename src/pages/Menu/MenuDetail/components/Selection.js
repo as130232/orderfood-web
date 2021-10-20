@@ -1,4 +1,4 @@
-import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Typography } from '@material-ui/core';
+import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Typography } from '@mui/material'
 
 const Content = ({ type, items, mealForm, setMealForm }) => {
     const updateForm = (item) => {
