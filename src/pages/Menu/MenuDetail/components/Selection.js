@@ -1,4 +1,4 @@
-import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Typography } from '@mui/material'
+import { FormControlLabel, RadioGroup, FormGroup, Radio, Checkbox, Typography, Stack, Chip } from '@mui/material'
 
 const Content = ({ type, items, mealForm, setMealForm }) => {
     const updateForm = (item) => {
@@ -61,14 +61,17 @@ const Content = ({ type, items, mealForm, setMealForm }) => {
 const Selection = ({ selection, mealForm, setMealForm }) => {
     let requiredSpan = null
     if (selection.required) {
-        requiredSpan = <span>(必選)</span>
+        requiredSpan = <Chip label="必填" color="primary" variant="outlined" size="small" />
     }
 
     return (
         <div>
-            <Typography gutterBottom variant="h6">
-                {selection.name}{requiredSpan}
-            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="h6">
+                    {selection.name}
+                </Typography>
+                {requiredSpan}
+            </Stack>
             <Content type={selection.type} items={selection.items} mealForm={mealForm} setMealForm={setMealForm} />
             <p></p>
         </div>

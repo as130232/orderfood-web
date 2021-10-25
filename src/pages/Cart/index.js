@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { connect } from 'react-redux'
-import { useHistory } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import { Button, Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
@@ -8,10 +8,11 @@ import { FONT_COLOR } from '../../global/constants'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
 
 const CartItem = ({ item, removeFromCart, adjustQty }) => {
     let history = useHistory()
+    const { storeCode } = useParams();
     let mealTotal = (item.price + (item.selections.reduce((prev, cur) => { return prev + cur.price }, 0))) * item.qty
 
     const [mealCount, setMealCount] = useState(item.qty)
@@ -98,18 +99,40 @@ const DeliveryType = ({ type }) => {
 
 const Cart = ({ cart, removeFromCart, adjustQty }) => {
     document.title = "購物車"
-
+    const { storeCode } = useParams();
+    const [order, setOrder] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
     useEffect(() => {
         let price = 0
         let count = 0
+        let items = [];
         cart.forEach(item => {
             count += item.qty
             price += item.qty * (item.price + item.selections.reduce((prev, cur) => { return prev + cur.price }, 0))
+            let selections = item.selections.map(e => e.id)
+            let orderItem = {
+                "count": item.qty,
+                "mealId": item.id,
+                "note": item.note,
+                "selections": selections
+            }
+            items.push(orderItem)
         })
         setTotalPrice(price)
         setTotalCount(count)
+        setOrder({
+            "code": storeCode,
+            "group": false,
+            "note": "",
+            "type": 1,
+            "takeTime": "",
+            "items": items,
+            // "address": "string",
+            // "phone": "string",
+            // "userToken": "string",
+            // "username": "string"
+        })
     }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount])
 
     const [value, setValue] = useState(new Date());
@@ -119,7 +142,7 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
     }
 
     const submit = () => {
-
+        console.log('order', order)
     }
 
 
@@ -138,6 +161,7 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
                         <Typography variant="h6" align="right" >${totalPrice}</Typography>
                     </Grid>
                 </Grid>
+
                 <p></p>
                 <Grid
                     container
@@ -145,6 +169,15 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
                     justifyContent="center"
                     alignItems="flex-start"
                 >
+                    <TextField
+                        id="outlined-basic"
+                        label="備註"
+                        variant="outlined"
+                        multiline
+                        rows={1}
+                        value={order.note}
+                        onChange={(e) => { setOrder(prev => ({ ...prev, note: e.target.value })) }}
+                    />
                     <FormControl component="fieldset">
                         <RadioGroup row aria-label="payType" name="row-radio-buttons-group" defaultValue="1">
                             <FormControlLabel value="1" control={<Radio />} label="現場付款" />
@@ -158,29 +191,29 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
                     </FormControl>
                     <FormControl component="fieldset">
                         <RadioGroup row aria-label="type" name="row-radio-buttons-group" defaultValue="1">
-                            <FormControlLabel value="1" control={<Radio />} label="自取" />
-                            <FormControlLabel value="2" control={<Radio />} label="店家外送" />
+                            <FormControlLabel value="1" control={<Radio />} label="自取" onChange={(e) => {
+                                setOrder(prev => ({ ...prev, type: e.target.value }))
+                            }} />
+                            <FormControlLabel value="2" control={<Radio />} label="店家外送" onChange={(e) => {
+                                setOrder(prev => ({ ...prev, type: e.target.value }))
+                            }} />
                         </RadioGroup>
                     </FormControl>
 
-                    <MobileDatePicker
-                        label="For mobile"
+                    <MobileDateTimePicker
                         value={value}
+                        minDateTime={new Date()}
+                        // onChange={(newValue) => {
+                        //     setValue(newValue);
+                        // }}
                         onChange={(newValue) => {
-                            setValue(newValue);
+                            setOrder(prev => ({ ...prev, takeTime: newValue }))
                         }}
                         renderInput={(params) => <TextField {...params} />}
                     />
-
-                    <TextField
-                        id="outlined-basic"
-                        label="備註"
-                        variant="outlined"
-                        multiline
-                        rows={1}
-                    />
+                    <p></p>
+                    <Button variant="contained" onClick={submit}>訂餐</Button>
                 </Grid>
-                <Button color="secondary" variant="contained" onClick={submit}></Button>
             </Box>
         </Box>
     )

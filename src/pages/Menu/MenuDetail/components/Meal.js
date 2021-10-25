@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import { useHistory, useLocation } from "react-router-dom"
 import Selection from './Selection'
-import { Box, Grid, TextField, Button, Typography, Divider } from '@mui/material'
+import { Box, Grid, TextField, Button, Typography, Divider, Stack } from '@mui/material'
 import { addToCart, updateToCart, adjustQty } from '../../../../redux/Ordering/OrderingActions'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
@@ -16,13 +16,16 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
   })
 
   const history = useHistory()
-
   const search = useLocation().search
   const uuid = new URLSearchParams(search).get("uuid")
 
+  const [totalPrice, setTotalPrice] = useState(0)
+
   useEffect(() => {
-    console.log('menuForm change ', mealForm, mealForm.selections)
-  }, [mealForm])
+    let price = mealForm.qty * (meal.price + mealForm.selections.reduce((prev, cur) => { return prev + cur.price }, 0))
+    setTotalPrice(price)
+    // console.log('menuForm change ', mealForm, mealForm.selections)
+  }, [mealForm, meal])
 
   useEffect(() => {
     if (uuid) {
@@ -69,7 +72,7 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
   }
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box>
       <Box sx={{ my: 3, mx: 2 }}>
         <Grid container alignItems="center">
           <Grid item xs>
@@ -90,7 +93,6 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
       <Divider variant="middle" />
       <Box sx={{ m: 2 }}>
         {meal.selections && meal.selections.map((selection, idx) => {
-          // mealInCart.selections
           return (
             <Selection selection={selection} key={idx} mealForm={mealForm} setMealForm={setMealForm} />
           )
@@ -105,30 +107,20 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
           value={mealForm.note}
           onChange={(e) => { setMealForm(prev => ({ ...prev, note: e.target.value })) }}
         />
-        <p></p>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={2}
-        >
-          <Grid item>
+      </Box>
+      <Box role="presentation" sx={{ position: 'fixed', bottom: 16, width: '100%' }} >
+        <Stack direction="row" spacing={3} justifyContent="center" alignItems="center">
+          <Stack direction="row" spacing={1} alignItems="center">
             <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
               onClick={handleSubCount} />
-          </Grid>
-          <Grid item>
             <Typography variant="h5">{mealForm.qty}</Typography>
-          </Grid>
-          <Grid item>
             <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
               onClick={handleAddCount} />
-          </Grid>
-          <Grid item>
-            <Button color="secondary" variant="contained" onClick={uuid ? handleUpdateToCart : handleAddToCart}>{uuid ? "更新購物車" : "加入購物車"}</Button>
-          </Grid>
-        </Grid>
-
+          </Stack>
+          <Button size="large" variant="contained" onClick={uuid ? handleUpdateToCart : handleAddToCart}>
+            {uuid ? "更新購物車" : "加入購物車"}　　${totalPrice}
+          </Button>
+        </Stack>
       </Box>
     </Box>
   )
