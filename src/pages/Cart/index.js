@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router-dom"
 import { Button, Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-import { FONT_COLOR } from '../../global/constants'
+import { FONT_COLOR } from '../../global/globalStyle'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -12,7 +12,6 @@ import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
 
 const CartItem = ({ item, removeFromCart, adjustQty }) => {
     let history = useHistory()
-    const { storeCode } = useParams();
     let mealTotal = (item.price + (item.selections.reduce((prev, cur) => { return prev + cur.price }, 0))) * item.qty
 
     const [mealCount, setMealCount] = useState(item.qty)
@@ -60,14 +59,14 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
                 spacing={1}
             >
                 <Grid item>
-                    <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+                    <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR.ORANGE, cursor: 'pointer' }}
                         onClick={handleSubCount} />
                 </Grid>
                 <Grid item>
                     <Typography variant="h5">{mealCount}</Typography>
                 </Grid>
                 <Grid item>
-                    <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+                    <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR.ORANGE, cursor: 'pointer' }}
                         onClick={handleAddCount} />
                 </Grid>
             </Grid>
@@ -97,9 +96,8 @@ const DeliveryType = ({ type }) => {
     }
 }
 
-const Cart = ({ cart, removeFromCart, adjustQty }) => {
+const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
     document.title = "購物車"
-    const { storeCode } = useParams();
     const [order, setOrder] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
@@ -143,6 +141,7 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
 
     const submit = () => {
         console.log('order', order)
+
     }
 
 
@@ -219,9 +218,10 @@ const Cart = ({ cart, removeFromCart, adjustQty }) => {
     )
 }
 
-const mapStateToProps = (state, dispatch) => {
+const mapStateToProps = (state) => {
     return {
         cart: state.order.cart,
+        storeCode: state.order.storeCode
     }
 }
 const mapDispatchToProps = dispatch => {

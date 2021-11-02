@@ -1,6 +1,15 @@
 import * as actionTypes from './OrderingTypes'
 import { v4 as uuidv4 } from 'uuid';
 
+export const chooseStore = (storeCode) => {
+    return {
+        type: actionTypes.CHOOSE_STORE,
+        payload: {
+            id: storeCode,
+        }
+    }
+}
+
 export const addToCart = (meal, selections, note, qty) => {
     return {
         type: actionTypes.ADD_TO_CART,

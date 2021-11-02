@@ -1,12 +1,18 @@
 import * as actionTypes from './OrderingTypes'
 
 const INIT_STATE = {
-    cart: []
+    cart: [],
+    storeCode: null,
 }
 
 const orderReducer = (state = INIT_STATE, action) => {
     console.log('action: ', action)
     switch (action.type) {
+        case actionTypes.CHOOSE_STORE:
+            return {
+                ...state,
+                storeCode: action.payload.id
+            }
         case actionTypes.ADD_TO_CART:
             return {
                 ...state,

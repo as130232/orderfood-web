@@ -6,7 +6,7 @@ import { Box, Grid, TextField, Button, Typography, Divider, Stack } from '@mui/m
 import { addToCart, updateToCart, adjustQty } from '../../../../redux/Ordering/OrderingActions'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-import { FONT_COLOR } from '../../../../global/constants'
+import { FONT_COLOR } from '../../../../global/globalStyle'
 
 const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
   const [mealForm, setMealForm] = useState({
@@ -111,13 +111,15 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
       <Box role="presentation" sx={{ position: 'fixed', bottom: 16, width: '100%' }} >
         <Stack direction="row" spacing={3} justifyContent="center" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+            <RemoveCircleIcon fontSize="large" style={{ color: FONT_COLOR.ORANGE, cursor: 'pointer' }}
               onClick={handleSubCount} />
             <Typography variant="h5">{mealForm.qty}</Typography>
-            <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR, cursor: 'pointer' }}
+            <AddCircleIcon fontSize="large" style={{ color: FONT_COLOR.ORANGE, cursor: 'pointer' }}
               onClick={handleAddCount} />
           </Stack>
-          <Button size="large" variant="contained" onClick={uuid ? handleUpdateToCart : handleAddToCart}>
+          <Button size="large" variant="contained"
+            style={{ backgroundColor: FONT_COLOR.ORANGE }}
+            onClick={uuid ? handleUpdateToCart : handleAddToCart}>
             {uuid ? "更新購物車" : "加入購物車"}　　${totalPrice}
           </Button>
         </Stack>
@@ -125,7 +127,7 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
     </Box>
   )
 }
-const mapStateToProps = (state, dispatch) => {
+const mapStateToProps = (state) => {
   return {
     cart: state.order.cart,
   }
