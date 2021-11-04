@@ -96,12 +96,22 @@ const DeliveryType = ({ type }) => {
     }
 }
 
-const Cart = ({ user, cart, storeCode, removeFromCart, adjustQty }) => {
+const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
     document.title = "購物車"
+    const { liff, isLoggedIn, ready, error } = useLiff()
+    const [lineProfile, setLineProfile] = useState('')
     const [order, setOrder] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
-    const [dateValue, setDateValue] = useState(new Date());
+    const [dateValue, setDateValue] = useState(new Date())
+
+    useEffect(() => {
+        if (!isLoggedIn) return;
+        (async () => {
+            const profile = await liff.getProfile();
+            setLineProfile(profile)
+        })()
+    }, [liff, isLoggedIn])
 
     useEffect(() => {
         let price = 0
@@ -128,14 +138,14 @@ const Cart = ({ user, cart, storeCode, removeFromCart, adjustQty }) => {
             "type": 1,
             "takeTime": dateValue,
             "items": items,
-            "userToken": user.id,
+            "userToken": lineProfile.userId,
             // "address": "string",
             // "phone": "string",
             // "username": "string"
         })
     }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount])
 
-    
+
 
     if (cart.length == 0) {
         return (<Box>空的購物車</Box>)
@@ -150,6 +160,7 @@ const Cart = ({ user, cart, storeCode, removeFromCart, adjustQty }) => {
             },
             body: JSON.stringify(order)
         }).then(res => res.json()).then(res => res.data).then((orderUuid) => {
+            console.log('orderUuid', orderUuid)
             liff.sendMessages([
                 {
                     type: 'text',
@@ -240,7 +251,6 @@ const Cart = ({ user, cart, storeCode, removeFromCart, adjustQty }) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.order.user,
         cart: state.order.cart,
         storeCode: state.order.storeCode
     }

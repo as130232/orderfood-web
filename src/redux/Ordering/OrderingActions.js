@@ -1,15 +1,6 @@
 import * as actionTypes from './OrderingTypes'
 import { v4 as uuidv4 } from 'uuid';
 
-export const setUser = (id) => {
-    return {
-        type: actionTypes.SET_USER,
-        payload: {
-            id: id,
-        }
-    }
-}
-
 export const chooseStore = (storeCode) => {
     return {
         type: actionTypes.CHOOSE_STORE,
