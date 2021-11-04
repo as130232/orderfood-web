@@ -50,7 +50,7 @@ const Menu = ({ props, cart, chooseStore }) => {
 
     if (cart.length !== 0) {
         cartComponent =
-            <Box component="span" sx={{ position: 'fixed', bottom: 0, height: 50, width: '100%', bgcolor: 'primary.contrastText' }}>
+            <Box component="span" sx={{ position: 'fixed', m: 1, bottom: 0, height: 40, width: '100%', bgcolor: 'primary.contrastText' }}>
                 <Button fullWidth={true} size="large" variant="contained"
                     onClick={() => {
                         history.push("/cart")
@@ -66,6 +66,41 @@ const Menu = ({ props, cart, chooseStore }) => {
                     </Stack>
                 </Button>
             </Box>
+    }
+
+
+    function ScrollTop(props) {
+        const { children, window } = props;
+        const trigger = useScrollTrigger({
+            target: window ? window() : undefined,
+            disableHysteresis: true,
+            threshold: 100,
+        });
+
+        const handleClick = (event) => {
+            const anchor = (event.target.ownerDocument || document).querySelector(
+                '#back-to-top-anchor',
+            );
+
+            if (anchor) {
+                anchor.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                });
+            }
+        };
+
+        return (
+            <Zoom in={trigger}>
+                <Box
+                    onClick={handleClick}
+                    role="presentation"
+                    sx={{ position: 'fixed', bottom: cart.length > 0 ? 60 : 20, right: 16 }}
+                >
+                    {children}
+                </Box>
+            </Zoom>
+        );
     }
 
     return (
@@ -100,37 +135,3 @@ const mapDispatchToProps = dispatch => {
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)
-
-function ScrollTop(props) {
-    const { children, window } = props;
-    const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
-        disableHysteresis: true,
-        threshold: 100,
-    });
-
-    const handleClick = (event) => {
-        const anchor = (event.target.ownerDocument || document).querySelector(
-            '#back-to-top-anchor',
-        );
-
-        if (anchor) {
-            anchor.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-        }
-    };
-
-    return (
-        <Zoom in={trigger}>
-            <Box
-                onClick={handleClick}
-                role="presentation"
-                sx={{ position: 'fixed', bottom: 60, right: 16 }}
-            >
-                {children}
-            </Box>
-        </Zoom>
-    );
-}

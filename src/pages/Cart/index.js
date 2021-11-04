@@ -5,10 +5,10 @@ import { Button, Box, Grid, Typography, Divider, TextField, FormControl, FormLab
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { FONT_COLOR } from '../../global/globalStyle'
+import { API_GET_ORDER } from '../../global/constants'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
-
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
+import { useLiff } from 'react-liff'
 
 const CartItem = ({ item, removeFromCart, adjustQty }) => {
     let history = useHistory()
@@ -101,6 +101,16 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
     const [order, setOrder] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
+
+    const { liff, isLoggedIn, ready, error } = useLiff()
+    useEffect(() => {
+        if (!isLoggedIn) return;
+        (async () => {
+            const profile = await liff.getProfile()
+            setOrder(prev => ({ ...prev, userToken: profile.userId }))
+        })()
+    }, [liff, isLoggedIn])
+
     useEffect(() => {
         let price = 0
         let count = 0
@@ -126,14 +136,14 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
             "type": 1,
             "takeTime": "",
             "items": items,
+            // "userToken": "string",
             // "address": "string",
             // "phone": "string",
-            // "userToken": "string",
             // "username": "string"
         })
     }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount])
 
-    const [value, setValue] = useState(new Date());
+    const [dateValue, setDateValue] = useState(new Date());
 
     if (cart.length == 0) {
         return (<Box>空的購物車</Box>)
@@ -141,7 +151,20 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
 
     const submit = () => {
         console.log('order', order)
-
+        fetch(API_GET_ORDER, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        }).then((response) => {
+            //ok 代表狀態碼在範圍 200-299
+            if (!response.ok) throw new Error(response.statusText)
+            return response.json()
+        }).catch((error) => {
+            //這裡可以顯示一些訊息
+            //console.error(error)
+        })
     }
 
 
@@ -200,12 +223,10 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
                     </FormControl>
 
                     <MobileDateTimePicker
-                        value={value}
+                        value={dateValue}
                         minDateTime={new Date()}
-                        // onChange={(newValue) => {
-                        //     setValue(newValue);
-                        // }}
                         onChange={(newValue) => {
+                            setDateValue(newValue)
                             setOrder(prev => ({ ...prev, takeTime: newValue }))
                         }}
                         renderInput={(params) => <TextField {...params} />}
