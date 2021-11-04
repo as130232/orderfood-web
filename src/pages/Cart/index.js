@@ -157,13 +157,20 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(order)
-        }).then((response) => {
-            //ok 代表狀態碼在範圍 200-299
-            if (!response.ok) throw new Error(response.statusText)
-            return response.json()
+        }).then(res => res.json()).then(res => res.data).then((orderUuid) => {
+            liff.sendMessages([
+                {
+                    type: 'text',
+                    text: '@訂單 ' + orderUuid
+                }
+            ]).then(() => {
+                console.log('message sent');
+                liff.closeWindow()
+            }).catch((err) => {
+                console.log('sendMessages error', err);
+            });
         }).catch((error) => {
-            //這裡可以顯示一些訊息
-            //console.error(error)
+            console.error('API_GET_ORDER error', error)
         })
     }
 
