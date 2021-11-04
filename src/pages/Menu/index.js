@@ -5,7 +5,7 @@ import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { API_GET_STORE } from '../../global/constants'
 import { Typography, Zoom, Fab, Box, Stack, Button, useScrollTrigger } from '@mui/material'
-import { chooseStore, adjustQty } from '../../redux/Ordering/OrderingActions'
+import { chooseStore } from '../../redux/Ordering/OrderingActions'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 import { connect } from 'react-redux'
@@ -131,7 +131,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         chooseStore: (storeCode) => dispatch(chooseStore(storeCode)),
-        adjustQty: (uuid, qty) => dispatch(adjustQty(uuid, qty)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)

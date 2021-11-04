@@ -11,6 +11,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { connect } from 'react-redux'
+import {setUser} from '../redux/Ordering/OrderingActions'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const PrimarySearchAppBar = ({ cart }) => {
+const PrimarySearchAppBar = ({ cart, setUser }) => {
 
     const [lineProfile, setLineProfile] = useState('')
     const { error, liff, isLoggedIn, ready } = useLiff()
@@ -62,6 +63,7 @@ const PrimarySearchAppBar = ({ cart }) => {
         (async () => {
             const profile = await liff.getProfile();
             setLineProfile(profile)
+            setUser(profile.userId)
         })()
     }, [liff, isLoggedIn])
 
@@ -269,4 +271,9 @@ const mapStateToProps = state => {
         cart: state.order.cart
     }
 }
-export default connect(mapStateToProps)(PrimarySearchAppBar)
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: (id) => dispatch(setUser(id)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PrimarySearchAppBar)

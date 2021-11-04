@@ -96,20 +96,12 @@ const DeliveryType = ({ type }) => {
     }
 }
 
-const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
+const Cart = ({ user, cart, storeCode, removeFromCart, adjustQty }) => {
     document.title = "購物車"
     const [order, setOrder] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
-
-    const { liff, isLoggedIn, ready, error } = useLiff()
-    useEffect(() => {
-        if (!isLoggedIn) return;
-        (async () => {
-            const profile = await liff.getProfile()
-            setOrder(prev => ({ ...prev, userToken: profile.userId }))
-        })()
-    }, [liff, isLoggedIn])
+    const [dateValue, setDateValue] = useState(new Date());
 
     useEffect(() => {
         let price = 0
@@ -134,16 +126,16 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
             "group": false,
             "note": "",
             "type": 1,
-            "takeTime": "",
+            "takeTime": dateValue,
             "items": items,
-            // "userToken": "string",
+            "userToken": user.id,
             // "address": "string",
             // "phone": "string",
             // "username": "string"
         })
     }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount])
 
-    const [dateValue, setDateValue] = useState(new Date());
+    
 
     if (cart.length == 0) {
         return (<Box>空的購物車</Box>)
@@ -248,6 +240,7 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.order.user,
         cart: state.order.cart,
         storeCode: state.order.storeCode
     }
