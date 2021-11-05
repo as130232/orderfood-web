@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom"
-import { Box, Grid, Typography, Divider, TextField, FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material'
+import { Alert, AlertTitle, Box, Grid, Typography, Divider, TextField, FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
@@ -139,22 +139,22 @@ const Cart = ({ cart, store, removeFromCart, adjustQty }) => {
         setTotalPrice(price)
         setTotalCount(count)
         setOrder({
-            "code": store.code,
+            "code": store.id,
             "group": false,
             "note": "",
             "type": 1,
             "takeTime": dateValue,
             "items": items,
             "userToken": lineProfile.userId,
+            "username": lineProfile.displayName,
             // "address": "string",
             // "phone": "string",
-            // "username": "string"
         })
-    }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount])
+    }, [cart, totalPrice, totalCount, setTotalPrice, setTotalCount, dateValue, store, lineProfile])
 
 
 
-    if (cart.length == 0) {
+    if (cart.length === 0) {
         return (<Box>空的購物車</Box>)
     }
 
@@ -169,6 +169,13 @@ const Cart = ({ cart, store, removeFromCart, adjustQty }) => {
             body: JSON.stringify(order)
         }).then(res => res.json()).then(res => res.data).then((orderUuid) => {
             console.log('orderUuid', orderUuid)
+            if (!orderUuid) {
+                return (
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        送出訂單失敗！
+                    </Alert>)
+            }
             liff.sendMessages([
                 {
                     type: 'text',
