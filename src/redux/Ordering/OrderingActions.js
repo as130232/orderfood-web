@@ -1,11 +1,13 @@
 import * as actionTypes from './OrderingTypes'
 import { v4 as uuidv4 } from 'uuid';
 
-export const chooseStore = (storeCode) => {
+export const chooseStore = (storeCode, openTime, closedTime) => {
     return {
         type: actionTypes.CHOOSE_STORE,
         payload: {
             id: storeCode,
+            openTime: openTime,
+            closedTime: closedTime,
         }
     }
 }

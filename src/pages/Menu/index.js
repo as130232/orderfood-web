@@ -9,6 +9,7 @@ import { chooseStore } from '../../redux/Ordering/OrderingActions'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 import { connect } from 'react-redux'
+import { useLiff } from 'react-liff'
 // import { FONT_COLOR } from '../../global/globalStyle'
 
 const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {
@@ -21,6 +22,7 @@ const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {
 }
 
 const Menu = ({ props, cart, chooseStore }) => {
+    const { liff, isLoggedIn, ready, error } = useLiff()
     const { storeCode } = useParams()
     const [store, setStore] = useState({
         code: 0,
@@ -31,7 +33,7 @@ const Menu = ({ props, cart, chooseStore }) => {
     useEffect(() => {
         getStoreInfo(setStore, setGroupMenu, storeCode)
     }, [storeCode])
-    chooseStore(storeCode)
+    chooseStore(store.code, store.openTime, store.closedTime)
 
     let history = useHistory()
     let cartComponent = null
@@ -130,7 +132,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        chooseStore: (storeCode) => dispatch(chooseStore(storeCode)),
+        chooseStore: (storeCode, openTime, closedTime) => dispatch(chooseStore(storeCode, openTime, closedTime)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)

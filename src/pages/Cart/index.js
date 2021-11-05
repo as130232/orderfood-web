@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { connect } from 'react-redux'
-import { useParams, useHistory } from "react-router-dom"
-import { Button, Box, Grid, Typography, Divider, TextField, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material'
+import { useHistory } from "react-router-dom"
+import { Box, Grid, Typography, Divider, TextField, FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { FONT_COLOR } from '../../global/globalStyle'
 import { API_GET_ORDER } from '../../global/constants'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
-import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker'
 import { useLiff } from 'react-liff'
 
 const CartItem = ({ item, removeFromCart, adjustQty }) => {
@@ -75,35 +76,41 @@ const CartItem = ({ item, removeFromCart, adjustQty }) => {
     )
 }
 
-const DeliveryType = ({ type }) => {
-    //自取
-    if (type === 1) {
-        // const [date, setDate] = React.useState(new Date());
-        return (
-            <div>
-                {/* <MobileDatePicker
-                    label="For mobile"
-                    value={date}
-                    onChange={(newValue) => {
-                        setDate(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                /> */}
-            </div>
-        )
-    } else if (type === 2) {
+// const DeliveryType = ({ type }) => {
+//     //自取
+//     if (type === 1) {
+//         // const [date, setDate] = React.useState(new Date());
+//         return (
+//             <div>
+//                 {/* <MobileDatePicker
+//                     label="For mobile"
+//                     value={date}
+//                     onChange={(newValue) => {
+//                         setDate(newValue);
+//                     }}
+//                     renderInput={(params) => <TextField {...params} />}
+//                 /> */}
+//             </div>
+//         )
+//     } else if (type === 2) {
 
-    }
-}
+//     }
+// }
 
-const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
+const Cart = ({ cart, store, removeFromCart, adjustQty }) => {
     document.title = "購物車"
-    const { liff, isLoggedIn, ready, error } = useLiff()
+    const { liff, isLoggedIn } = useLiff()
     const [lineProfile, setLineProfile] = useState('')
     const [order, setOrder] = useState({})
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
-    const [dateValue, setDateValue] = useState(new Date())
+    const [isLoading, setIsLoading] = useState(false)
+
+    let thirtyMinutesLater = new Date()
+    thirtyMinutesLater.setMinutes(Math.round(thirtyMinutesLater.getMinutes() / 10) * 10 + 30)
+    thirtyMinutesLater.setSeconds(0)
+    thirtyMinutesLater.setMilliseconds(0)
+    const [dateValue, setDateValue] = useState(thirtyMinutesLater)
 
     useEffect(() => {
         if (!isLoggedIn) return;
@@ -132,7 +139,7 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
         setTotalPrice(price)
         setTotalCount(count)
         setOrder({
-            "code": storeCode,
+            "code": store.code,
             "group": false,
             "note": "",
             "type": 1,
@@ -153,6 +160,7 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
 
     const submit = () => {
         console.log('order', order)
+        setIsLoading(true)
         fetch(API_GET_ORDER, {
             method: 'POST',
             headers: {
@@ -167,16 +175,19 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
                     text: '@訂單 ' + orderUuid
                 }
             ]).then(() => {
-                console.log('message sent');
-                liff.closeWindow()
+                console.log('message sent')
+                liff.closeWindow()  //關閉視窗
             }).catch((err) => {
-                console.log('sendMessages error', err);
-            });
+                console.log('sendMessages error', err)
+            })
         }).catch((error) => {
             console.error('API_GET_ORDER error', error)
         })
     }
 
+    let maxDateTime = new Date()
+    maxDateTime.setHours(store.closedTime ? store.closedTime.split(':')[0] : 23)
+    maxDateTime.setMinutes(store.closedTime ? store.closedTime.split(':')[1] : 59)
 
     return (
         <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -232,9 +243,10 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
                         </RadioGroup>
                     </FormControl>
 
-                    <MobileDateTimePicker
+                    <DateTimePicker
                         value={dateValue}
                         minDateTime={new Date()}
+                        maxDateTime={maxDateTime}
                         onChange={(newValue) => {
                             setDateValue(newValue)
                             setOrder(prev => ({ ...prev, takeTime: newValue }))
@@ -242,7 +254,7 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
                         renderInput={(params) => <TextField {...params} />}
                     />
                     <p></p>
-                    <Button variant="contained" onClick={submit}>訂餐</Button>
+                    <LoadingButton loading={isLoading} variant="contained" onClick={submit}>訂餐</LoadingButton>
                 </Grid>
             </Box>
         </Box>
@@ -252,7 +264,7 @@ const Cart = ({ cart, storeCode, removeFromCart, adjustQty }) => {
 const mapStateToProps = (state) => {
     return {
         cart: state.order.cart,
-        storeCode: state.order.storeCode
+        store: state.order.store
     }
 }
 const mapDispatchToProps = dispatch => {

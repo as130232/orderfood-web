@@ -2,7 +2,7 @@ import * as actionTypes from './OrderingTypes'
 
 const INIT_STATE = {
     cart: [],
-    storeCode: null
+    store: {}
 }
 
 const orderReducer = (state = INIT_STATE, action) => {
@@ -11,7 +11,7 @@ const orderReducer = (state = INIT_STATE, action) => {
         case actionTypes.CHOOSE_STORE:
             return {
                 ...state,
-                storeCode: action.payload.id
+                store: action.payload
             }
         case actionTypes.ADD_TO_CART:
             return {

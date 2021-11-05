@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import Item from "./Item";
 import styled from "styled-components"
 import { PAGE_CONTAINER } from '../../../global/globalStyle'
@@ -16,10 +16,8 @@ const AGroup = styled.ul`
 `
 
 function getCurrentGroupInView(windowScrollY, groupElements){
-
 	const bufferDistance = 80; // 緩衝距離
 	let groupInView = null; // 滑進範圍的group
-
 	groupElements.forEach((grp, index) => {
 		const groupTop = grp.getBoundingClientRect().top - bufferDistance // group的top與螢幕上邊框的距離，會隨著scroll改變
 		const groupBottom = grp.getBoundingClientRect().bottom + bufferDistance // group的bottom與螢幕上邊框的距離
@@ -28,15 +26,12 @@ function getCurrentGroupInView(windowScrollY, groupElements){
 			groupInView = index
 		}
 	})
-
 	return groupInView
 }
 
 const Group = ({ groupMenuData, updateGroupInView }) => {
-
 	const prevScrollY = useScrollYPosition() // 上一次 Y scroll位置
 	const groupRef = useRef([]);
-
 	useEffect(() => {
 
 		if (!groupRef.current) {
@@ -48,7 +43,7 @@ const Group = ({ groupMenuData, updateGroupInView }) => {
 			updateGroupInView(groupIndex);
 		}
 		
-	}, [groupRef, prevScrollY])
+	}, [groupRef, prevScrollY, updateGroupInView])
 
   return (
 		<GroupWrapper className="group-wrapper">

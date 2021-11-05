@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useLiff } from 'react-liff'
-import { styled, alpha } from '@mui/material/styles';
-import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { styled, alpha } from '@mui/material/styles'
+import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import AccountCircle from '@mui/icons-material/AccountCircle'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+// import SearchIcon from '@mui/icons-material/Search'
+// import MailIcon from '@mui/icons-material/Mail'
+// import NotificationsIcon from '@mui/icons-material/Notifications'
+// import MoreIcon from '@mui/icons-material/MoreVert'
 import { connect } from 'react-redux'
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,11 +65,16 @@ const PrimarySearchAppBar = ({ cart }) => {
         })()
     }, [liff, isLoggedIn])
 
+    const lineLogin = () => {
+        console.log('lineLogin')
+        liff.login({ redirectUri: "http://localhost:3000/store/menu/1000" })
+    }
+
     const showLineImage = () => {
         if (error) return <p>Something is wrong.</p>
         if (!ready) return <p>Loading...</p>
         if (!isLoggedIn) {
-            return <AccountCircle onClick={liff.login} />
+            return <AccountCircle onClick={lineLogin} />
         }
         return (
             <Avatar alt={lineProfile.displayName} src={lineProfile.pictureUrl} onClick={handleAccountOpen} />
