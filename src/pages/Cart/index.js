@@ -10,6 +10,7 @@ import { API_GET_ORDER } from '../../global/constants'
 import { adjustQty, removeFromCart } from '../../redux/Ordering/OrderingActions'
 import DateTimePicker from '@mui/lab/DateTimePicker'
 import { useLiff } from 'react-liff'
+import { TransitionGroup } from 'react-transition-group';
 
 const CartItem = ({ item, removeFromCart, adjustQty }) => {
     let history = useHistory()
@@ -169,7 +170,7 @@ const Cart = ({ cart, store, removeFromCart, adjustQty }) => {
             body: JSON.stringify(order)
         }).then(res => res.json()).then(res => res.data).then((orderUuid) => {
             console.log('orderUuid', orderUuid)
-            if (!orderUuid) {
+            if (orderUuid === null) {
                 return (
                     <Alert severity="error">
                         <AlertTitle>Error</AlertTitle>

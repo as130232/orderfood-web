@@ -4,13 +4,13 @@ import Store from "./components/Store"
 import Group from "./components/Group"
 import GroupNav from "./components/GroupNav"
 import { API_GET_STORE } from '../../global/constants'
-import { Typography, Zoom, Fab, Box, Stack, Button, useScrollTrigger } from '@mui/material'
+import { Grid, Typography, Zoom, Fab, Box, Stack, Button, useScrollTrigger } from '@mui/material'
 import { chooseStore } from '../../redux/Ordering/OrderingActions'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import PrimarySearchAppBar from "../../components/PrimarySearchAppBar"
 import { connect } from 'react-redux'
 import { useLiff } from 'react-liff'
-// import { FONT_COLOR } from '../../global/globalStyle'
+import { FONT_COLOR } from '../../global/globalStyle'
 
 const getStoreInfo = async (setStore, setGroupMenu, storeCode) => {
     let url = API_GET_STORE.replace(":storeCode", storeCode)
@@ -52,14 +52,21 @@ const Menu = ({ props, cart, chooseStore }) => {
 
     if (cart.length !== 0) {
         cartComponent =
-            <Box component="span" sx={{ position: 'fixed', m: 1, bottom: 0, height: 40, width: '100%', bgcolor: 'primary.contrastText' }}>
-                <Button fullWidth={true} size="large" variant="contained"
+            <Grid container
+                justifyContent="center"
+                alignItems="center"
+                sx={{ position: 'fixed', bottom: 0, height: 55, width: '100%', bgcolor: 'primary.contrastText' }}>
+                {/* <Box
+                sx={{ position: 'fixed', bottom: 0, height: 50, width: '100%', bgcolor: 'primary.contrastText' }}> */}
+                <Button
+                    size="large" variant="contained" sx={{ backgroundColor: FONT_COLOR.ORANGE, borderRadius: '12px' }}
+
                     onClick={() => {
                         history.push("/cart")
                     }}>
                     <Stack
                         direction="row"
-                        spacing={12}
+                        spacing={10}
                         justifyContent="center"
                         alignItems="center">
                         <Typography variant="h7"> {totalCount}</Typography>
@@ -67,7 +74,7 @@ const Menu = ({ props, cart, chooseStore }) => {
                         <Typography variant="h7"> $ {totalPrice} </Typography>
                     </Stack>
                 </Button>
-            </Box>
+            </Grid>
     }
 
 
@@ -97,7 +104,7 @@ const Menu = ({ props, cart, chooseStore }) => {
                 <Box
                     onClick={handleClick}
                     role="presentation"
-                    sx={{ position: 'fixed', bottom: cart.length > 0 ? 60 : 20, right: 16 }}
+                    sx={{ position: 'fixed', bottom: cart.length > 0 ? 60 : 20, right: 16, }}
                 >
                     {children}
                 </Box>
@@ -116,7 +123,7 @@ const Menu = ({ props, cart, chooseStore }) => {
             }} />
 
             <ScrollTop {...props}>
-                <Fab color="primary" size="small" aria-label="scroll back to top">
+                <Fab sx={{ color: FONT_COLOR.ORANGE }} size="small" aria-label="scroll back to top">
                     <KeyboardArrowUpIcon />
                 </Fab>
             </ScrollTop>

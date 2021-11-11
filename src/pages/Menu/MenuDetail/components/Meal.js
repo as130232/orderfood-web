@@ -118,7 +118,7 @@ const Meal = ({ meal, cart, addToCart, updateToCart, adjustQty }) => {
               onClick={handleAddCount} />
           </Stack>
           <Button size="large" variant="contained"
-            style={{ backgroundColor: FONT_COLOR.ORANGE }}
+            sx={{ backgroundColor: FONT_COLOR.ORANGE }}
             onClick={uuid ? handleUpdateToCart : handleAddToCart}>
             {uuid ? "更新購物車" : "加入購物車"}　　${totalPrice}
           </Button>
